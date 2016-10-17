@@ -1,0 +1,26 @@
+{
+  "manifest_version": 2,
+
+  "name": "WeSiSho",
+  "description": "A chrome extension for adding shortcuts inside websites",
+  "version": "1.0",
+
+  "browser_action": {
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "activeTab", "storage",
+    "https://ajax.googleapis.com/",
+    "http://*/*", "tabs"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"], 
+      "js": ["./dist/app.js"], 
+      "run_at": "document_start"
+    }
+  ],
+  "background": {
+    "scripts": ["./dist/background.js"]
+  }
+}
