@@ -16,7 +16,7 @@
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"], 
-      "js": ["./dist/app.js"], 
+      "js": ["jquery.min.js", "./dist/app.js"], 
       "run_at": "document_start"
     }
   ],
