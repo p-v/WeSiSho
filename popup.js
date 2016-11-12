@@ -2,7 +2,7 @@ const addClickListeners = () => {
   document.getElementById('url').addEventListener('click', () => {
     // to do add url to chrome extension database
     if ($('#saveUrlDiv').length === 0) {
-      $('#url').after('<div id=\'saveUrlDiv\'><input id=\'short_char\' maxlength=\'1\' placeholder=\'Press key for shortcut\' type=\'text\' name=\'abc\'><lable><button id=\'urlSave\'>Save</button></div>');
+      $('#url').after('<div id=\'saveUrlDiv\'><input id=\'short_char\' class=\'form-control\' maxlength=\'1\' placeholder=\'Press key for shortcut\' type=\'text\' name=\'abc\'><lable><button id=\'urlSave\' class=\'btn btn-default\'>Save</button></div>');
       $('#urlSave').click(() => {
         chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
           const url = tabs[0].url;
