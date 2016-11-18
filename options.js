@@ -1,27 +1,8 @@
-const prepareTree = shortcuts => {
-  const treeArr = [];
-  for (const key in shortcuts) {
-    const tree = {};
-    if ({}.hasOwnProperty.call(shortcuts, key)) {
-      tree.text = key;
-      tree.nodes = [];
-      for (const s in shortcuts[key]) {
-        if ({}.hasOwnProperty.call(shortcuts[key], s)) {
-          const node = [];
-          node.text = s + ' ' + shortcuts[key][s].url;
-          tree.nodes.push(node);
-        }
-      }
-    }
-    treeArr.push(tree);
-  }
-  console.log(treeArr);
-  return treeArr;
-}
 const restore_options = () => {
   // Use default value color = 'red' and likesColor = true.
   chrome.storage.local.get('shortcuts', (result) => {
     const shortcuts = result.shortcuts;
+    console.log(shortcuts);
     let idx = 0;
     for (const key in shortcuts) {
       if ({}.hasOwnProperty.call(shortcuts, key)) {
@@ -29,11 +10,59 @@ const restore_options = () => {
         const titleId = `site-${idx}`;
         const contentId = `content-${idx}`;
         $('#tree').append(`<div id="${titleId}" class="sites" data-toggle="collapse" data-target="#${contentId}">${key}</div>`);
-        $('#tree').append(`<div id="${contentId}" class="collapse"></div>`);
+        $('#tree').append(`<div id="${contentId}" class="collapse form-horizontal"></div>`);
+        let idxInr = 0
         for (const s in shortcuts[key]) {
           if ({}.hasOwnProperty.call(shortcuts[key], s)) {
-            const row = `${s} ${shortcuts[key][s].url}`;
-            $(`#${contentId}`).append(`<div>${row}</div>`);
+            const row = `${shortcuts[key][s].url}`;
+            idxInr += 1;
+            const removeRowId = `rem-${contentId}-${idxInr}`;
+            const editRowId = `edit-${contentId}-${idxInr}`;
+            const rowId = `row-${contentId}-${idxInr}`;
+            const inputId = `input-${contentId}-${idxInr}`;
+            $(`#${contentId}`).append(`<div id="${rowId}" class="form-group"><h5 for="${editRowId}" class="col-md-4 control-label">${row}</h5>
+                                      <div class="col-md-2"><input id="${inputId}" class="form-control" maxlength="1" placeholder="Press key for shortcut" type="text" value="${s}">
+                                      </div>  <span id="${removeRowId}" class="glyphicon glyphicon-remove modifier col-md-1" aria-hidden="true"></span></div>`);
+            $(`#${removeRowId}`).click(() => {
+              let deleteKey = false;
+              if ($(`#${contentId}`).children().length === 1) {
+                $(`#${titleId}`).remove();
+                deleteKey = true;
+              }
+              $(`#${rowId}`).remove();
+              chrome.storage.local.get('shortcuts', (result) => {
+                const shortcuts = result.shortcuts;
+                if (deleteKey) {
+                  delete shortcuts[key];
+                } else {
+                  delete shortcuts[key][s];
+                }
+                // update local storage
+                chrome.storage.local.set({ shortcuts }, () => {
+                  // Notify that we saved.
+                  window.alert('Settings saved');
+                });
+              });
+            });
+            $(`#${inputId}`).on('input',(e) => {
+              const saveId = `save-${contentId}-${idxInr}`;
+              if (!$(`#${saveId}`).length) {
+                $(`#${rowId}`).append(`<span id="${saveId}" class="glyphicon glyphicon-ok modifier col-md-1" aria-hidden="true"></span>`);
+                $(`#${saveId}`).click(() =>{
+                  const newShortcut = $(`#${inputId}`).val();
+                  chrome.storage.local.get('shortcuts', (result) => {
+                    const shortcuts = result.shortcuts;
+                    shortcuts[key][newShortcut] = shortcuts[key][s];
+                    delete shortcuts[key][s];
+                    // update local storage
+                    chrome.storage.local.set({ shortcuts }, () => {
+                      // Notify that we saved.
+                      window.alert('Settings saved');
+                    });
+                  });
+                });
+              }
+            });
           }
         }
       }
