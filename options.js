@@ -1,5 +1,28 @@
 const restore_options = () => {
   // Use default value color = 'red' and likesColor = true.
+
+  // configure leader key
+  const setLeader = document.getElementById('set_leader');
+  setLeader.addEventListener('click', () => {
+    // get leader value
+    const leaderVal = document.getElementById('leader_key').value;
+    const leaderCode = leaderVal && (leaderVal.charCodeAt(0));
+
+    if (leaderCode) {
+      chrome.storage.local.set({ leader_key: leaderCode }, () => {
+        document.getElementById('save_msg').innerText = 'Leader key saved';
+      });
+    } else {
+      document.getElementById('save_msg').innerText = 'Please enter a vaild key';
+      chrome.storage.local.remove('leader_key', () => {
+        const error = chrome.runtime.lastError;
+        if (error) {
+          console.error(error);
+        }
+      });
+    }
+  });
+
   chrome.storage.local.get('shortcuts', (result) => {
     const shortcuts = result.shortcuts;
     console.log(shortcuts);

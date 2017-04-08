@@ -3,18 +3,19 @@ const addClickListeners = () => {
     // to do add url to chrome extension database
     if ($('#saveUrlDiv').length === 0) {
       $('#url').after('<div id=\'saveUrlDiv\'><input id=\'short_char\' class=\'form-control\' maxlength=\'10\' placeholder=\'Press key for shortcut\' type=\'text\' name=\'abc\'><lable><button id=\'urlSave\' class=\'btn btn-default\'>Save</button></div>');
+     
       $('#urlSave').click(() => {
         chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
           const url = tabs[0].url;
           const key = document.getElementById('short_char').value;
           chrome.tabs.sendMessage(tabs[0].id, { action: 'save_url', url, key });
         });
-        window.close();
+        // window.close();
       });
     }
     $('input')[0].focus();
   });
-  document.getElementById('record').addEventListener('click', () => {
+  //document.getElementById('record').addEventListener('click', () => {
     // to do add url to chrome extension database
     // start recording
     //chrome.tabs.sendMessage(tab.id, {action:'start'}, function(response) {
@@ -30,8 +31,8 @@ const addClickListeners = () => {
       } else {
       recordBtn.innerHTML = "Record";
       }*/
-    window.alert('Coming soon');
-  });
+    //window.alert('Coming soon');
+  //});
 };
 
 chrome.runtime.onMessage.addListener((request, sender) => {
