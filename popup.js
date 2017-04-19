@@ -17,22 +17,22 @@ const addClickListeners = () => {
   });
 
   chrome.tabs.onActivated.addListener(function(tabId,windowId) {
-    chrome.storage.local.set({'isRecoding': "false"},  () => {
+    chrome.storage.local.set({'isRecoding': false},  () => {
     document.getElementById('recKey').innerText = "Record";
     }); 
   });
 
   // check the recording status
   chrome.storage.local.get('isRecoding', (res) =>{
-        recButton = res.isRecoding;
-        
-        if (recButton == 'true'){
-          document.getElementById('recKey').innerText = "Recording... Press to stop...";
-        }
-        else{
-          document.getElementById('recKey').innerText = "Record";
-        }
-      });
+    recButton = res.isRecoding;
+
+    if (recButton) {
+      document.getElementById('recKey').innerText = "Recording... Press to stop...";
+    }
+    else{
+      document.getElementById('recKey').innerText = "Record";
+    }
+  });
 
   // When record key is pressed
   document.getElementById('recKey').addEventListener('click', () => {
@@ -41,18 +41,16 @@ const addClickListeners = () => {
     // set flag in local storage that record key is pressed
     chrome.storage.local.get('isRecoding', (res) =>{
       recButton = res.isRecoding;
-
-      if ( typeof recButton == 'undefined' || recButton == 'false'){
-        alert('recKey Pressed' + recButton);
-        chrome.storage.local.set({'isRecoding': "true"},  () => {
+      if (!recButton) {
+        // alert('recKey Pressed' + recButton);
+        chrome.storage.local.set({'isRecoding': true},  () => {
           document.getElementById('recKey').innerText = "Recording... Press to stop...";
         });
+      } else {
+        chrome.storage.local.set({'isRecoding': false},  () => {
+          document.getElementById('recKey').innerText = 'Record';
+        });       
       }
-      else if (recButton == 'true'){
-        chrome.storage.local.set({'isRecoding': "false"},  () => {
-        document.getElementById('recKey').innerText = "Record";
-          });       
-      };
     });
 
     //chrome.tabs.sendMessage(tab.id, {action:'start'}, function(response) {
@@ -95,7 +93,6 @@ chrome.runtime.onMessage.addListener((request, sender) => {
 
 
 document.addEventListener('DOMContentLoaded', () => {
-
   addClickListeners();
 });
 
