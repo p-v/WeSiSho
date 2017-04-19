@@ -22,6 +22,12 @@ const restore_options = () => {
       });
     }
   });
+  chrome.storage.local.get('leader_key', (res) => {
+    if (res) {
+      const leader = document.getElementById('leader_key');
+      leader.value = String.fromCharCode(res.leader_key);
+    }
+  });
 
   chrome.storage.local.get('shortcuts', (result) => {
     const shortcuts = result.shortcuts;
