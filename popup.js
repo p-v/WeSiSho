@@ -15,9 +15,45 @@ const addClickListeners = () => {
     }
     $('input')[0].focus();
   });
-  //document.getElementById('record').addEventListener('click', () => {
+
+  chrome.tabs.onActivated.addListener(function(tabId,windowId) {
+    chrome.storage.local.set({'isRecoding': false},  () => {
+    document.getElementById('recKey').innerText = "Record";
+    }); 
+  });
+
+  // check the recording status
+  chrome.storage.local.get('isRecoding', (res) =>{
+    recButton = res.isRecoding;
+
+    if (recButton) {
+      document.getElementById('recKey').innerText = "Recording... Press to stop...";
+    }
+    else{
+      document.getElementById('recKey').innerText = "Record";
+    }
+  });
+
+  // When record key is pressed
+  document.getElementById('recKey').addEventListener('click', () => {
     // to do add url to chrome extension database
     // start recording
+    // set flag in local storage that record key is pressed
+    chrome.storage.local.get('isRecoding', (res) =>{
+      recButton = res.isRecoding;
+
+      if (!recButton) {
+        // alert('recKey Pressed' + recButton);
+        chrome.storage.local.set({'isRecoding': true},  () => {
+          document.getElementById('recKey').innerText = "Recording... Press to stop...";
+        });
+      } else {
+        chrome.storage.local.set({'isRecoding': false},  () => {
+          document.getElementById('recKey').innerText = 'Record';
+        });       
+      }
+    });
+
     //chrome.tabs.sendMessage(tab.id, {action:'start'}, function(response) {
     //  console.log('Start action sent');
     //});
@@ -33,6 +69,7 @@ const addClickListeners = () => {
       }*/
     //window.alert('Coming soon');
   //});
+});
 };
 
 chrome.runtime.onMessage.addListener((request, sender) => {
@@ -45,7 +82,7 @@ chrome.runtime.onMessage.addListener((request, sender) => {
   if (!domain) {
     console.error('Unable to find domain');
     return;
-  }
+  };
 
   /*
      chrome.storage.local.set({ "phasersTo": "awesome" }, function(){
@@ -55,6 +92,10 @@ chrome.runtime.onMessage.addListener((request, sender) => {
 });
 
 
+
 document.addEventListener('DOMContentLoaded', () => {
+
   addClickListeners();
 });
+
+
