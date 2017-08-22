@@ -17,15 +17,14 @@ const addClickListeners = () => {
   });
 
   chrome.tabs.onActivated.addListener(function(tabId,windowId) {
-    chrome.storage.local.set({'isRecoding': false},  () => {
-    document.getElementById('recKey').innerText = "Record";
+    chrome.storage.local.remove('record',  () => {
+      document.getElementById('recKey').innerText = 'Record';
     }); 
   });
 
   // check the recording status
-  chrome.storage.local.get('isRecoding', (res) =>{
-    recButton = res.isRecoding;
-
+  chrome.storage.local.get('record', (res) =>{
+    recButton = res && res.record;
     if (recButton) {
       document.getElementById('recKey').innerText = "Recording... Press to stop...";
     }
@@ -39,15 +38,19 @@ const addClickListeners = () => {
     // to do add url to chrome extension database
     // start recording
     // set flag in local storage that record key is pressed
-    chrome.storage.local.get('isRecoding', (res) =>{
-      recButton = res.isRecoding;
+    chrome.storage.local.get('record', (res) =>{
+      recButton = res && res.record;
       if (!recButton) {
-        // alert('recKey Pressed' + recButton);
-        chrome.storage.local.set({'isRecoding': true},  () => {
+        const record = {
+          id: Date.now(),
+          links: [],
+        };
+        chrome.storage.local.set({ record },  () => {
           document.getElementById('recKey').innerText = "Recording... Press to stop...";
         });
       } else {
-        chrome.storage.local.set({'isRecoding': false},  () => {
+        console.log(res.record);
+        chrome.storage.local.remove('record',  () => {
           document.getElementById('recKey').innerText = 'Record';
         });       
       }

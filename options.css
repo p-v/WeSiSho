@@ -1,7 +1,24 @@
 .sites {
-  font-size: 20px;
+  font-size: 14px;
   cursor: pointer;
+  padding-bottom: 6px;
+  margin-bottom: 25px;
+  border-bottom: 1px solid #848484;
+  user-select: none;
 }
 .modifier {
   cursor: pointer;
+}
+
+#save_msg.show-save-msg {
+  display: inline-block;
+}
+
+#save_msg.hide-save-msg {
+  display: none;
+}
+
+.cross-icon {
+  line-height: 25px;
+  padding: 5px;
 }

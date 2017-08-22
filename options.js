@@ -10,7 +10,10 @@ const restore_options = () => {
 
     if (leaderCode) {
       chrome.storage.local.set({ leader_key: leaderCode }, () => {
-        document.getElementById('save_msg').innerText = 'Leader key saved';
+        document.getElementById('save_msg').className = 'show-save-msg';
+        setTimeout(() => {
+          document.getElementById('save_msg').className = 'hide-save-msg';
+        }, 2000);
       });
     } else {
       document.getElementById('save_msg').innerText = 'Please enter a vaild key';
@@ -49,9 +52,9 @@ const restore_options = () => {
             const editRowId = `edit-${contentId}-${idxInr}`;
             const rowId = `row-${contentId}-${idxInr}`;
             const inputId = `input-${contentId}-${idxInr}`;
-            $(`#${contentId}`).append(`<div id="${rowId}" class="form-group"><h5 for="${editRowId}" class="col-md-4 control-label">${row}</h5>
+            $(`#${contentId}`).append(`<div id="${rowId}" class="form-group"><div for="${editRowId}" class="col-md-4 control-label">${row}</div>
                                       <div class="col-md-2"><input id="${inputId}" class="form-control" maxlength="1" placeholder="Press key for shortcut" type="text" value="${s}">
-                                      </div>  <span id="${removeRowId}" class="glyphicon glyphicon-remove modifier col-md-1" aria-hidden="true"></span></div>`);
+                                      </div>  <div id="${removeRowId}" class="glyphicon glyphicon-remove modifier col-md-1 cross-icon" aria-hidden="true"></div></div>`);
             $(`#${removeRowId}`).click(() => {
               let deleteKey = false;
               if ($(`#${contentId}`).children().length === 1) {
