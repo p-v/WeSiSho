@@ -10,6 +10,7 @@ module.exports = {
         "document": true,
         "window": true,
         "top": true,
-        "chrome": true
+        "chrome": true,
+        "KeyboardEvent": true
     }
 };

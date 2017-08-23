@@ -17,6 +17,7 @@
     {
       "matches": ["http://*/*", "https://*/*"], 
       "js": ["jquery.min.js", "./dist/app.js"], 
+      "css": ["./node_modules/sweetalert2/dist/sweetalert2.min.css"],
       "run_at": "document_start"
     }
   ],

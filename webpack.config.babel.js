@@ -2,13 +2,13 @@ import path from 'path';
 
 export default {
     module: {
-        loaders: [
-            {
-                test: /\.(?:js|es6)$/,
-                exclude: /node_modules/,
-                loader: "babel-loader",
-            }
-        ]
+      loaders: [
+        {
+          test: /\.(?:js|es6)$/,
+          exclude: /node_modules/,
+          loader: "babel-loader",
+        }
+      ]
     },
     entry: {
         app :  path.join(__dirname, "lib", "app"),
