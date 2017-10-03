@@ -40,9 +40,10 @@ const restore_options = () => {
       if ({}.hasOwnProperty.call(shortcuts, key)) {
         idx += 1;
         const titleId = `site-${idx}`;
+        const tree = document.querySelector('#tree');
+        tree.innerHTML += `<div id="${titleId}" class="sites" data-toggle="collapse" data-target="#${contentId}">${key}</div>`;
+        tree.innerHTML += `<div id="${contentId}" class="collapse form-horizontal"></div>`;
         const contentId = `content-${idx}`;
-        $('#tree').append(`<div id="${titleId}" class="sites" data-toggle="collapse" data-target="#${contentId}">${key}</div>`);
-        $('#tree').append(`<div id="${contentId}" class="collapse form-horizontal"></div>`);
         let idxInr = 0
         for (const s in shortcuts[key]) {
           if ({}.hasOwnProperty.call(shortcuts[key], s)) {
@@ -52,10 +53,10 @@ const restore_options = () => {
             const editRowId = `edit-${contentId}-${idxInr}`;
             const rowId = `row-${contentId}-${idxInr}`;
             const inputId = `input-${contentId}-${idxInr}`;
-            $(`#${contentId}`).append(`<div id="${rowId}" class="form-group"><div for="${editRowId}" class="col-md-4 control-label">${row}</div>
+            document.querySelector(`#${contentId}`) += `<div id="${rowId}" class="form-group"><div for="${editRowId}" class="col-md-4 control-label">${row}</div>
                                       <div class="col-md-2"><input id="${inputId}" class="form-control" maxlength="1" placeholder="Press key for shortcut" type="text" value="${s}">
-                                      </div>  <div id="${removeRowId}" class="glyphicon glyphicon-remove modifier col-md-1 cross-icon" aria-hidden="true"></div></div>`);
-            $(`#${removeRowId}`).click(() => {
+                                      </div>  <div id="${removeRowId}" class="glyphicon glyphicon-remove modifier col-md-1 cross-icon" aria-hidden="true"></div></div>`;
+            document.querySelector(`#${removeRowId}`).click(() => {
               let deleteKey = false;
               if ($(`#${contentId}`).children().length === 1) {
                 $(`#${titleId}`).remove();
