@@ -6,7 +6,7 @@
   "version": "1.0",
 
   "browser_action": {
-    "default_popup": "popup.html"
+    "default_popup": "html/popup.html"
   },
   "permissions": [
     "activeTab", "storage",
@@ -16,16 +16,15 @@
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"], 
-      "js": ["./dist/app.js"], 
-      "css": ["./node_modules/sweetalert2/dist/sweetalert2.min.css"],
+      "js": ["js/app.js"], 
       "run_at": "document_start"
     }
   ],
   "background": {
-    "scripts": ["./dist/background.js"]
+    "scripts": ["js/background.js"]
   },
   "options_ui": {
-    "page": "options.html",
+    "page": "html/options.html",
     "chrome_style": true,
     "open_in_tab": true
   }
