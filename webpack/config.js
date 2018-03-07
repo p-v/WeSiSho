@@ -4,7 +4,7 @@ module.exports = {
   entry: {
     background: './src/js/background',
     app: './src/js/app',
-    options: './src/js/options',
+    options: './src/js/options/index.jsx',
     popup: './src/js/popup',
   },
   output: {
@@ -16,17 +16,48 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js$/,
-        loaders: ['babel-loader'],
+        test: /\.jsx?$/,
+        loader: 'babel-loader',
         include: path.resolve(__dirname, '../src/js'),
+        query: {
+          presets: ['es2015', 'react'],
+        }
       },
       {
-        test: /\.css$/,
-        use: ['style-loader', 'css-loader']
+        test: /\.global\.css$/,
+        use: [
+          {
+            loader: 'style-loader'
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
+            },
+          }
+        ]
+      },
+      {
+        test: /^((?!\.global).)*\.css$/,
+        use: [
+          {
+            loader: 'style-loader'
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+              sourceMap: true,
+              camelCase: true,
+              importLoaders: 1,
+              localIdentName: '[name]__[local]__[hash:base64:5]',
+            }
+          },
+        ]
       },
       {
         test: /.woff$|.woff2$|.ttf$|.eot$|.svg$/,
-        loader: 'file-loader'
+        loader: 'file-loader',
       },
     ],
   },

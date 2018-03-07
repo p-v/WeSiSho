@@ -1,22 +1,45 @@
-const restore_options = () => {
-  // Use default value color = 'red' and likesColor = true.
+import React from 'react';
+import { render } from 'react-dom';
+import Style from './style.css';
+import WebShortcuts from './web-shortcuts.jsx';
 
-  // configure leader key
-  const setLeader = document.getElementById('set_leader');
-  setLeader.addEventListener('click', () => {
+class Main extends React.Component {
+
+  constructor() {
+    super();
+    this.onLeaderSave = this.onLeaderSave.bind(this);
+    this.state = {
+      showSaveMsg: false,
+      keyError: false,
+    };
+  }
+
+  componentDidMount() {
+    // configure leader key
+    chrome.storage.local.get('leader_key', (res) => {
+      if (res) {
+        this.leaderInput.value = String.fromCharCode(res.leader_key);
+      }
+    });
+  }
+
+  onLeaderSave() {
     // get leader value
-    const leaderVal = document.getElementById('leader_key').value;
+    const leaderVal = this.leaderInput.value;
     const leaderCode = leaderVal && (leaderVal.charCodeAt(0));
 
     if (leaderCode) {
       chrome.storage.local.set({ leader_key: leaderCode }, () => {
-        document.getElementById('save_msg').className = 'show-save-msg';
+        this.setState({ showSaveMsg: true, keyError: false });
         setTimeout(() => {
-          document.getElementById('save_msg').className = 'hide-save-msg';
+          this.setState({ showSaveMsg: false, keyError: false });
         }, 2000);
       });
     } else {
-      document.getElementById('save_msg').innerText = 'Please enter a vaild key';
+      this.setState({ keyError: true });
+      setTimeout(() => {
+        this.setState({ keyError: false });
+      }, 2000);
       chrome.storage.local.remove('leader_key', () => {
         const error = chrome.runtime.lastError;
         if (error) {
@@ -24,14 +47,39 @@ const restore_options = () => {
         }
       });
     }
-  });
-  chrome.storage.local.get('leader_key', (res) => {
-    if (res) {
-      const leader = document.getElementById('leader_key');
-      leader.value = String.fromCharCode(res.leader_key);
-    }
-  });
+  }
 
+  render() {
+    const { showSaveMsg, keyError } = this.state;
+    return (
+      <div>
+        <h3>Configure Leader Key:</h3>
+        <input
+          ref={(leaderInput) => { this.leaderInput = leaderInput; }}
+          placeholder="Default ,"
+          maxLength={1}
+        />
+        <button onClick={this.onLeaderSave}>Save</button>
+        { keyError
+          ? <div>{'Please enter a valid key'}</div>
+          : <div className={showSaveMsg ? Style.showSaveMsg : Style.hideSaveMsg}>Leader key saved</div>
+        }
+        <WebShortcuts />
+      </div>
+    );
+  }
+
+}
+
+render(
+  <Main />,
+  document.getElementById('root')
+);
+
+
+/*
+const restore_options = () => {
+  // Use default value color = 'red' and likesColor = true.
   chrome.storage.local.get('shortcuts', (result) => {
     const shortcuts = result.shortcuts;
     console.log(shortcuts);
@@ -102,5 +150,4 @@ const restore_options = () => {
       }
     }
   });
-}
-document.addEventListener('DOMContentLoaded', restore_options);
+}*/

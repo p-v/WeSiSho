@@ -10,11 +10,11 @@
   cursor: pointer;
 }
 
-#save_msg.show-save-msg {
+.show-save-msg {
   display: inline-block;
 }
 
-#save_msg.hide-save-msg {
+.hide-save-msg {
   display: none;
 }
 
