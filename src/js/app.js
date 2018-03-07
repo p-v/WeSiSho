@@ -1,5 +1,6 @@
 import Handler from './url-handler';
 import Logger from './logger';
+import 'sweetalert2/dist/sweetalert2.min.css';
 // import Utils from './utils';
 
 /*
