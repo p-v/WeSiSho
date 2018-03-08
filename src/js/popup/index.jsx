@@ -1,6 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { Well, Button, FormControl } from 'react-bootstrap';
+import '../../css/wesisho.global.css';
+import { saveButton } from './style.css';
 
 class Main extends React.Component {
 
@@ -45,22 +46,14 @@ class Main extends React.Component {
   render() {
     return (
       <div>
-        <h5>{'Select Option:'}</h5>
-        <Well>
-          <Button onClick={this.onAddButtonClick}>{'Add'}</Button>
-          { this.state.addShortcut &&
-            <div>
-              <FormControl
-                inputRef={(shortcutInput) => { this.shortcutInput = shortcutInput; }}
-                type="text"
-                maxLength={10}
-                placeholder="Press key for shortcut"
-                autoFocus
-              />
-              <Button onClick={this.onSaveShortcutClick}>{'Save'}</Button>
-            </div>
-          }
-        </Well>
+        <input
+          ref={(shortcutInput) => { this.shortcutInput = shortcutInput; }}
+          type="text"
+          maxLength={10}
+          placeholder="Set shortcut for page"
+          autoFocus
+        />
+        <button className={saveButton} onClick={this.onSaveShortcutClick}>{'Save'}</button>
       </div>
     );
   }
