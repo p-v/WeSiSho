@@ -16,6 +16,7 @@
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"], 
+      "css": ["css/sweetalert2.min.css"],
       "js": ["js/app.js"], 
       "run_at": "document_start"
     }

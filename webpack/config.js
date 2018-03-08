@@ -5,7 +5,7 @@ module.exports = {
     background: './src/js/background',
     app: './src/js/app',
     options: './src/js/options/index.jsx',
-    popup: './src/js/popup',
+    popup: './src/js/popup/index.jsx',
   },
   output: {
     filename: './js/[name].js',
