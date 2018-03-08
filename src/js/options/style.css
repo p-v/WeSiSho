@@ -8,12 +8,6 @@ body {
   user-select: none;
 }
 
-.icon {
-  line-height: 25px;
-  padding: 5px;
-  cursor: pointer;
-}
-
 .leader-input {
   display: inline-block;
   width: 100px;

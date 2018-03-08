@@ -12,7 +12,6 @@ module.exports = _.merge({}, config, {
   plugins: [
     new CopyWebpackPlugin([
       { from: './src' },
-      { from: './node_modules/bootstrap/dist/', to: './bootstrap/' },
       { from: './node_modules/sweetalert2/dist/sweetalert2.min.css', to: './css/' },
     ], {
       ignore: ['js/**/*'],
