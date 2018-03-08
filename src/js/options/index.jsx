@@ -1,17 +1,18 @@
 import React from 'react';
 import { render } from 'react-dom';
+import swal from 'sweetalert2';
 import Style from './style.css';
 import WebShortcuts from './web-shortcuts.jsx';
+
+const WESISHO = 'WeSiSho';
+const INVALID_KEY = 'Please enter a valid key';
+const LEADER_SAVED = 'Leader key saved';
 
 class Main extends React.Component {
 
   constructor() {
     super();
     this.onLeaderSave = this.onLeaderSave.bind(this);
-    this.state = {
-      showSaveMsg: false,
-      keyError: false,
-    };
   }
 
   componentDidMount() {
@@ -30,16 +31,10 @@ class Main extends React.Component {
 
     if (leaderCode) {
       chrome.storage.local.set({ leader_key: leaderCode }, () => {
-        this.setState({ showSaveMsg: true, keyError: false });
-        setTimeout(() => {
-          this.setState({ showSaveMsg: false, keyError: false });
-        }, 2000);
+        swal(WESISHO, LEADER_SAVED, 'success');
       });
     } else {
-      this.setState({ keyError: true });
-      setTimeout(() => {
-        this.setState({ keyError: false });
-      }, 2000);
+      swal(WESISHO, INVALID_KEY, 'error');
       chrome.storage.local.remove('leader_key', () => {
         const error = chrome.runtime.lastError;
         if (error) {
@@ -50,7 +45,6 @@ class Main extends React.Component {
   }
 
   render() {
-    const { showSaveMsg, keyError } = this.state;
     return (
       <div>
         <h3>Configure Leader Key:</h3>
@@ -60,10 +54,6 @@ class Main extends React.Component {
           maxLength={1}
         />
         <button onClick={this.onLeaderSave}>Save</button>
-        { keyError
-          ? <div>{'Please enter a valid key'}</div>
-          : <div className={showSaveMsg ? Style.showSaveMsg : Style.hideSaveMsg}>Leader key saved</div>
-        }
         <WebShortcuts />
       </div>
     );
