@@ -1,5 +1,9 @@
 import React from 'react';
+import swal from 'sweetalert2';
 import WebShortcutGroup from './web-shortcut-group.jsx';
+
+const WESISHO = 'WeSiSho';
+const SETTINGS_SAVED = 'Settings Saved';
 
 export default class WebShortcuts extends React.Component {
 
@@ -9,6 +13,7 @@ export default class WebShortcuts extends React.Component {
       showLoader: true,
       shortcuts: {},
     };
+    this.onRemoveClick = this.onRemoveClick.bind(this);
   }
 
   componentDidMount() {
@@ -87,6 +92,40 @@ export default class WebShortcuts extends React.Component {
     });
   }
 
+  onRemoveClick(key, shortcut) {
+    const { shortcuts } = this.state;
+
+    const newShortcuts = {
+      ...shortcuts,
+    };
+
+    let deleteKey = false;
+
+    if (newShortcuts[key] && Object.values(newShortcuts[key]).length === 1) {
+      delete newShortcuts[key];
+      deleteKey = true;
+    } else {
+      delete newShortcuts[key][shortcut];
+    }
+
+    this.setState({ shortcuts: newShortcuts });
+
+    chrome.storage.local.get('shortcuts', (result) => {
+      const storageShortcuts = result.shortcuts;
+      if (deleteKey) {
+        delete storageShortcuts[key];
+      } else {
+        delete storageShortcuts[key][shortcut];
+      }
+
+      // update local storage
+      chrome.storage.local.set({ shortcuts: storageShortcuts }, () => {
+        // Notify that we saved.
+        swal(WESISHO, SETTINGS_SAVED, 'success');
+      });
+    });
+  }
+
   render() {
     const { showLoader, shortcuts } = this.state;
     if (showLoader) {
@@ -103,6 +142,7 @@ export default class WebShortcuts extends React.Component {
         key={shortcut}
         shortcuts={shortcuts[shortcut]}
         base={shortcut}
+        onRemoveClick={this.onRemoveClick}
       />
     );
 

@@ -21,6 +21,7 @@ module.exports = {
         include: path.resolve(__dirname, '../src/js'),
         query: {
           presets: ['es2015', 'react'],
+          plugins: ["transform-object-rest-spread"],
         }
       },
       {
