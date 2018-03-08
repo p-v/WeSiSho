@@ -1,24 +1,28 @@
+body {
+  padding: 15px;
+}
+
 .sites {
   font-size: 14px;
   cursor: pointer;
-  padding-bottom: 6px;
-  margin-bottom: 25px;
-  border-bottom: 1px solid #848484;
   user-select: none;
 }
-.modifier {
+
+.icon {
+  line-height: 25px;
+  padding: 5px;
   cursor: pointer;
 }
 
-.show-save-msg {
+.leader-input {
   display: inline-block;
+  width: 100px;
 }
 
-.hide-save-msg {
-  display: none;
+.save-button {
+  margin-left: 10px;
 }
 
-.cross-icon {
-  line-height: 25px;
-  padding: 5px;
+.shortcuts-root {
+  margin-top: 40px;
 }

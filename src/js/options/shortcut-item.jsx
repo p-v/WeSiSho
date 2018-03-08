@@ -1,5 +1,6 @@
 import React from 'react';
-import { FormGroup, ControlLabel, FormControl, Glyphicon } from 'react-bootstrap';
+import { FormGroup, ControlLabel, FormControl, Glyphicon, Col, Row } from 'react-bootstrap';
+import { icon } from './style.css';
 
 export default class ShortcutItem extends React.Component {
 
@@ -7,7 +8,7 @@ export default class ShortcutItem extends React.Component {
     super();
     this.state = {
       showSaveIcon: false,
-    }
+    };
     this.onChange = this.onChange.bind(this);
     this.onSave = this.onSave.bind(this);
   }
@@ -27,7 +28,11 @@ export default class ShortcutItem extends React.Component {
     const { showSaveIcon } = this.state;
     return (
     <FormGroup>
-      <ControlLabel>{title}</ControlLabel>
+      <Row>
+      <Col md={3}>
+        <h5>{title}</h5>
+      </Col>
+      <Col md={4}>
       <FormControl
         inputRef={(shortcutInput) => { this.shortcutInput = shortcutInput; }}
         onChange={this.onChange}
@@ -36,8 +41,12 @@ export default class ShortcutItem extends React.Component {
         defaultValue={shortcut}
         placeholder="Press key for shortcut"
       />
-      { showSaveIcon && <div onClick={this.onSave}><Glyphicon bsClass="glyphicon" glyph="ok" /></div> }
-      <div onClick={() => onRemoveClick(base, shortcut)}><Glyphicon bsClass="glyphicon" glyph="remove" /></div>
+      </Col>
+      { showSaveIcon && <Col md={1}><Glyphicon onClick={this.onSave} className={icon} bsClass="glyphicon" glyph="ok" /></Col> }
+      <Col md={1}>
+        <Glyphicon onClick={() => onRemoveClick(base, shortcut)} className={icon} bsClass="glyphicon" glyph="remove" />
+      </Col>
+      </Row>
     </FormGroup>
     );
   }

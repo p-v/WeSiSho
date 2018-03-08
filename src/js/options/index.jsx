@@ -1,5 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
+import { FormControl, Button } from 'react-bootstrap';
 import swal from 'sweetalert2';
 import Style from './style.css';
 import WebShortcuts from './web-shortcuts.jsx';
@@ -47,13 +48,23 @@ class Main extends React.Component {
   render() {
     return (
       <div>
-        <h3>Configure Leader Key:</h3>
-        <input
-          ref={(leaderInput) => { this.leaderInput = leaderInput; }}
+        <h2>WeSiSho Options</h2>
+        <hr />
+        <h4>Configure Leader Key:</h4>
+        <FormControl
+          className={Style.leaderInput}
+          inputRef={(leaderInput) => { this.leaderInput = leaderInput; }}
+          type="text"
           placeholder="Default ,"
           maxLength={1}
         />
-        <button onClick={this.onLeaderSave}>Save</button>
+        <Button
+          onClick={this.onLeaderSave}
+          className={Style.saveButton}
+          bsStyle="primary"
+        >
+          {'Save'}
+        </Button>
         <WebShortcuts />
       </div>
     );

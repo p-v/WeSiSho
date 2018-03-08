@@ -1,6 +1,7 @@
 import React from 'react';
 import swal from 'sweetalert2';
 import WebShortcutGroup from './web-shortcut-group.jsx';
+import { shortcutsRoot } from './style.css';
 
 const WESISHO = 'WeSiSho';
 const SETTINGS_SAVED = 'Settings Saved';
@@ -133,11 +134,11 @@ export default class WebShortcuts extends React.Component {
   render() {
     const { showLoader, shortcuts } = this.state;
     if (showLoader) {
-      return (<h3>Loading...</h3>);
+      return (<h4>Loading...</h4>);
     }
 
     if (Object.keys(shortcuts).length === 0) {
-      return (<h3>{'No web shortcuts set so far'}</h3>);
+      return (<h4>{'No web shortcuts set so far'}</h4>);
     }
 
     const rows = Object.keys(shortcuts)
@@ -152,8 +153,8 @@ export default class WebShortcuts extends React.Component {
     );
 
     return (
-      <div>
-        <h3>Configure Shortcuts:</h3>
+      <div className={shortcutsRoot}>
+        <h4>Configure Shortcuts:</h4>
         {rows}
       </div>
     );

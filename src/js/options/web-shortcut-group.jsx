@@ -1,5 +1,6 @@
 import React from 'react';
 import { sites } from './style.css';
+import { Label } from 'react-bootstrap';
 import ShortcutItem from './shortcut-item.jsx';
 
 export default class WebShortcutGroup extends React.Component {
@@ -34,7 +35,8 @@ export default class WebShortcutGroup extends React.Component {
 
     return (
       <div onClick={this.toggleItem}>
-        <div className={sites}>{base}</div>
+        <h3><Label bsStyle="primary" bsSize="lg">{base}</Label></h3>
+        <hr />
         {rows}
       </div>
     );
