@@ -14,6 +14,7 @@ export default class WebShortcuts extends React.Component {
       shortcuts: {},
     };
     this.onRemoveClick = this.onRemoveClick.bind(this);
+    this.onUpdateClick = this.onUpdateClick.bind(this);
   }
 
   componentDidMount() {
@@ -44,27 +45,6 @@ export default class WebShortcuts extends React.Component {
               contentDiv.innerHTML += `<div id="${rowId}" class="form-group"><div for="${editRowId}" class="col-md-4 control-label">${row}</div>
                                         <div class="col-md-2"><input id="${inputId}" class="form-control" maxlength="1" placeholder="Press key for shortcut" type="text" value="${s}">
                                         </div>  <div id="${removeRowId}" class="glyphicon glyphicon-remove modifier col-md-1 cross-icon" aria-hidden="true"></div></div>`;
-              document.querySelector(`#${removeRowId}`).click(() => {
-                let deleteKey = false;
-                if ($(`#${contentId}`).children().length === 1) {
-                  $(`#${titleId}`).remove();
-                  deleteKey = true;
-                }
-                $(`#${rowId}`).remove();
-                chrome.storage.local.get('shortcuts', (result) => {
-                  const shortcuts = result.shortcuts;
-                  if (deleteKey) {
-                    delete shortcuts[key];
-                  } else {
-                    delete shortcuts[key][s];
-                  }
-                  // update local storage
-                  chrome.storage.local.set({ shortcuts }, () => {
-                    // Notify that we saved.
-                    window.alert('Settings saved');
-                  });
-                });
-              });
               $(`#${inputId}`).on('input',(e) => {
                 const saveId = `save-${contentId}-${idxInr}`;
                 if (!$(`#${saveId}`).length) {
@@ -89,6 +69,30 @@ export default class WebShortcuts extends React.Component {
         }
       }
     */
+    });
+  }
+
+  onUpdateClick(key, prevShortcut, newShortcut) {
+    const { shortcuts } = this.state;
+
+    const newShortcuts = {
+      ...shortcuts,
+    };
+
+    newShortcuts[key][newShortcut] = newShortcuts[key][prevShortcut];
+    delete newShortcuts[key][prevShortcut];
+
+    this.setState({ shortcuts: newShortcuts });
+
+    chrome.storage.local.get('shortcuts', (result) => {
+      const storageShortcuts = result.shortcuts;
+      storageShortcuts[key][newShortcut] = storageShortcuts[key][prevShortcut];
+      delete storageShortcuts[key][prevShortcut];
+      // update local storage
+      chrome.storage.local.set({ shortcuts: storageShortcuts }, () => {
+        // Notify that we saved.
+        swal(WESISHO, SETTINGS_SAVED, 'success');
+      });
     });
   }
 
@@ -143,6 +147,7 @@ export default class WebShortcuts extends React.Component {
         shortcuts={shortcuts[shortcut]}
         base={shortcut}
         onRemoveClick={this.onRemoveClick}
+        onUpdateClick={this.onUpdateClick}
       />
     );
 

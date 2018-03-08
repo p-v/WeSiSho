@@ -1,16 +1,6 @@
 import React from 'react';
-import { FormGroup, ControlLabel, FormControl, Button, Glyphicon } from 'react-bootstrap';
 import { sites } from './style.css';
-
-const ShortcutItem = ({ shortcut, title, base, onRemoveClick }) =>
-  (
-    <FormGroup>
-      <ControlLabel>{title}</ControlLabel>
-      <FormControl type="text" maxLength={1} defaultValue={shortcut} placeholder="Press key for shortcut" />
-      <div onClick={() => onRemoveClick(base, shortcut)}><Glyphicon bsClass="glyphicon" glyph="remove" /></div>
-    </FormGroup>
-  )
-
+import ShortcutItem from './shortcut-item.jsx';
 
 export default class WebShortcutGroup extends React.Component {
 
@@ -18,7 +8,7 @@ export default class WebShortcutGroup extends React.Component {
     super();
     this.state = {
       expanded: false,
-    }
+    };
     this.toggleItem = this.toggleItem.bind(this);
   }
 
@@ -27,7 +17,7 @@ export default class WebShortcutGroup extends React.Component {
   }
 
   render() {
-    const { base, shortcuts, onRemoveClick } = this.props;
+    const { base, shortcuts, onRemoveClick, onUpdateClick } = this.props;
 
     const rows = Object.keys(shortcuts)
     .map(shortcut =>
@@ -37,6 +27,7 @@ export default class WebShortcutGroup extends React.Component {
         title={shortcuts[shortcut].url}
         base={base}
         onRemoveClick={onRemoveClick}
+        onUpdateClick={onUpdateClick}
       />
     );
 
