@@ -25,6 +25,7 @@ export default class WebShortcutGroup extends React.Component {
         key={shortcut}
         shortcut={shortcut}
         title={shortcuts[shortcut].url}
+        description={shortcuts[shortcut].description}
         base={base}
         onRemoveClick={onRemoveClick}
         onUpdateClick={onUpdateClick}

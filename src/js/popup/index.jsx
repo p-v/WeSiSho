@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 import '../../css/wesisho.global.css';
-import { saveButton } from './style.css';
+import { shortcutInput, shortcutDescription, saveButton } from './style.css';
 
 class Main extends React.Component {
 
@@ -36,10 +36,11 @@ class Main extends React.Component {
   onSaveShortcutClick() {
     this.setState({ addShortcut: false });
     const keyValue = this.shortcutInput.value;
+    const description = this.shortcutDescInput.value;
     chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
       const url = tabs[0].url;
       const key = keyValue;
-      chrome.tabs.sendMessage(tabs[0].id, { action: 'save_url', url, key });
+      chrome.tabs.sendMessage(tabs[0].id, { action: 'save_url', url, key, description });
     });
   }
 
@@ -50,8 +51,15 @@ class Main extends React.Component {
           ref={(shortcutInput) => { this.shortcutInput = shortcutInput; }}
           type="text"
           maxLength={10}
+          className={shortcutInput}
           placeholder="Set shortcut for page"
           autoFocus
+        />
+        <textarea
+          ref={(shortcutDescInput) => { this.shortcutDescInput = shortcutDescInput; }}
+          className={shortcutDescription}
+          type="text"
+          placeholder="Add description for shortcut"
         />
         <button className={saveButton} onClick={this.onSaveShortcutClick}>{'Save'}</button>
       </div>

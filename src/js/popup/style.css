@@ -1,7 +1,12 @@
-body {
-  min-width:200px;
-}
-
 .save-button {
   margin-left: 10px;
+  float:right;
+}
+
+.shortcut-input, .shortcut-description {
+  width: 200px;
+}
+
+.shortcut-description {
+  margin-top: 10px;
 }

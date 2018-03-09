@@ -20,15 +20,15 @@ const lookInLocalStorage = (baseUrl, url, key) => {
   });
 };
 
-const saveToLocalStorage = (baseUrl, url, key) => {
+const saveToLocalStorage = (baseUrl, url, key, description) => {
   // Save it using the Chrome extension storage API.
   chrome.storage.local.get('shortcuts', (result) => {
     let shortcuts = result.shortcuts;
     if (shortcuts && {}.hasOwnProperty.call(shortcuts, baseUrl)) {
-      shortcuts[baseUrl][key] = { url };
+      shortcuts[baseUrl][key] = { url, description };
     } else {
       const keyObj = {};
-      keyObj[key] = { url };
+      keyObj[key] = { url, description };
       if (!shortcuts) {
         shortcuts = {};
       }
@@ -45,7 +45,8 @@ const saveUrlCommand = (request) => {
   const regexp = /https?:\/\/([^/#]+)/gi;
   const baseUrl = regexp.exec(request.url)[1].toLowerCase();
   const key = request.key;
-  saveToLocalStorage(baseUrl, request.url, key);
+  const description = request.description;
+  saveToLocalStorage(baseUrl, request.url, key, description);
 };
 
 const performAction = (request) => {

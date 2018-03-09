@@ -23,11 +23,13 @@ export default class ShortcutItem extends React.Component {
   }
 
   render() {
-    const { shortcut, title, base, onRemoveClick } = this.props;
+    const { shortcut, title, description, base, onRemoveClick } = this.props;
     const { showSaveIcon } = this.state;
+
+    const displayTitle = description ? `${description} (${title})` : title;
     return (
     <div>
-      <h5>{title}</h5>
+      <h5>{displayTitle}</h5>
       <input
         ref={(shortcutInput) => { this.shortcutInput = shortcutInput; }}
         onChange={this.onChange}

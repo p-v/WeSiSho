@@ -1,3 +1,15 @@
 textarea:focus, input:focus{
   outline: none;
 }
+
+input {
+  border: 1px solid #cccccc;
+  padding: 5px;
+}
+
+textarea {
+  min-height: 50px;
+  border: 1px solid #cccccc;
+  padding: 5px;
+  resize: none;
+}
