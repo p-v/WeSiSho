@@ -14,21 +14,6 @@ class Main extends React.Component {
     this.onSaveShortcutClick = this.onSaveShortcutClick.bind(this);
   }
 
-  componentDidMount() {
-    chrome.runtime.onMessage.addListener((request, sender) => {
-      console.log(`Received a message: ${request.url} and key: ${request.key}`);
-      const url = request.url;
-      const regexp = /https?:\/\/([^\/#]+)/gi;
-      const match = regexp.exec(url);
-      const domain = match[1].toLowerCase();
-      console.log(`logging domain:${domain}`);
-      if (!domain) {
-        console.error('Unable to find domain');
-        return;
-      };
-    });
-  }
-
   onAddButtonClick() {
     this.setState({ addShortcut: true });
   }
@@ -52,7 +37,7 @@ class Main extends React.Component {
     return (
       <div>
         <input
-          ref={(shortcutInput) => { this.shortcutInput = shortcutInput; }}
+          ref={(shortcutInputV) => { this.shortcutInput = shortcutInputV; }}
           type="text"
           maxLength={10}
           className={shortcutInput}

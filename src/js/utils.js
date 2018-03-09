@@ -9,3 +9,24 @@ export const showErrorMessage = (message) => {
 export const showSuccessMessage = (message) => {
   swal(WESISHO, message, 'success');
 };
+
+export const showConfirmationMessage = (title, message, callback, confirmButtonText = 'Ok') => {
+  swal({
+    title,
+    text: message,
+    type: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText,
+  }).then((result) => {
+    if (result) {
+      callback();
+    }
+  }).catch(swal.noop);
+};
+
+export const getBaseUrl = (url) => {
+  const regexp = /https?:\/\/([^/#]+)/gi;
+  return regexp.exec(url)[1].toLowerCase();
+};

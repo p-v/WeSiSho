@@ -1,6 +1,6 @@
 import Shortcuts from './shortcut';
 import Logger from './logger';
-import { showErrorMessage, showSuccessMessage } from './utils';
+import { showErrorMessage, showSuccessMessage, showConfirmationMessage, getBaseUrl } from './utils';
 
 const COMMAND_SET = 'Command set successfully';
 const COMMAND_ERROR = 'Looks like there is some error in the script or the html has been changed';
@@ -24,6 +24,16 @@ const saveToLocalStorage = (baseUrl, url, key, description) => {
   chrome.storage.local.get('shortcuts', (result) => {
     let shortcuts = result.shortcuts;
     if (shortcuts && {}.hasOwnProperty.call(shortcuts, baseUrl)) {
+      if (shortcuts[baseUrl][key]) {
+        showConfirmationMessage('Shortcut already exist', 'Do you want to update it?', () => {
+          shortcuts[baseUrl][key] = { url, description };
+          chrome.storage.local.set({ shortcuts }, () => {
+            // Notify that we saved.
+            showSuccessMessage(COMMAND_SET);
+          });
+        });
+        return;
+      }
       shortcuts[baseUrl][key] = { url, description };
     } else {
       const keyObj = {};
@@ -41,8 +51,7 @@ const saveToLocalStorage = (baseUrl, url, key, description) => {
 };
 
 const saveUrlCommand = (request) => {
-  const regexp = /https?:\/\/([^/#]+)/gi;
-  const baseUrl = regexp.exec(request.url)[1].toLowerCase();
+  const baseUrl = getBaseUrl(request.url);
   const key = request.key;
   const description = request.description;
   saveToLocalStorage(baseUrl, request.url, key, description);

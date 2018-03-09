@@ -2,6 +2,7 @@ import React from 'react';
 import swal from 'sweetalert2';
 import WebShortcutGroup from './web-shortcut-group.jsx';
 import { shortcutsRoot } from './style.css';
+import { showConfirmationMessage } from '../utils';
 
 const WESISHO = 'WeSiSho';
 const SETTINGS_SAVED = 'Settings Saved';
@@ -73,13 +74,7 @@ export default class WebShortcuts extends React.Component {
     });
   }
 
-  onUpdateClick(key, prevShortcut, newShortcut) {
-    const { shortcuts } = this.state;
-
-    const newShortcuts = {
-      ...shortcuts,
-    };
-
+  updateShortcut(key, prevShortcut, newShortcut, newShortcuts) {
     newShortcuts[key][newShortcut] = newShortcuts[key][prevShortcut];
     delete newShortcuts[key][prevShortcut];
 
@@ -95,6 +90,24 @@ export default class WebShortcuts extends React.Component {
         swal(WESISHO, SETTINGS_SAVED, 'success');
       });
     });
+  }
+
+  onUpdateClick(key, prevShortcut, newShortcut) {
+    const { shortcuts } = this.state;
+
+    const newShortcuts = {
+      ...shortcuts,
+    };
+
+    // Check if shortcut already exist
+    if (newShortcuts[key][newShortcut]) {
+      showConfirmationMessage('Shortcut already exist', 'Do you want to replace it?', () => {
+        delete newShortcuts[key][newShortcut];
+        this.updateShortcut(key, prevShortcut, newShortcut, newShortcuts);
+      });
+    }
+
+    this.updateShortcut(key, prevShortcut, newShortcut, newShortcuts);
   }
 
   onRemoveClick(key, shortcut) {
