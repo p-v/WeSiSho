@@ -1,8 +1,10 @@
 WeSiSho
 ===
 
-<b>We</b>b <b>Si</b>tes <b>Sho</b>rtcuts is a chrome extension for adding shortcuts inside websites. 
+**We**b **Si**tes **Sho**rtcuts is a chrome extension for adding shortcuts inside websites. 
 
+
+Press the leader(default `,`) and type the shortcut command to access the page quickly.
 
 ### Build
 > npm run build
@@ -12,6 +14,5 @@ WeSiSho
 #### TODOs
 
 - Get rid of shortcut.js
-- Add a settings page
 - Add a way to record actions
 
