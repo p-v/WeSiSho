@@ -20,7 +20,7 @@ module.exports = {
         loader: 'babel-loader',
         include: path.resolve(__dirname, '../src/js'),
         query: {
-          presets: ['es2015', 'react'],
+          presets: ['env', 'react'],
           plugins: ["transform-object-rest-spread"],
         }
       },

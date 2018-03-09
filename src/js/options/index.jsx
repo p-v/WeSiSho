@@ -1,10 +1,9 @@
 import React from 'react';
 import { render } from 'react-dom';
-import swal from 'sweetalert2';
 import Style from './style.css';
 import WebShortcuts from './web-shortcuts.jsx';
+import { showErrorMessage, showSuccessMessage } from '../utils';
 
-const WESISHO = 'WeSiSho';
 const INVALID_KEY = 'Please enter a valid key';
 const LEADER_SAVED = 'Leader key saved';
 
@@ -31,10 +30,10 @@ class Main extends React.Component {
 
     if (leaderCode) {
       chrome.storage.local.set({ leader_key: leaderCode }, () => {
-        swal(WESISHO, LEADER_SAVED, 'success');
+        showSuccessMessage(LEADER_SAVED);
       });
     } else {
-      swal(WESISHO, INVALID_KEY, 'error');
+      showErrorMessage(INVALID_KEY);
       chrome.storage.local.remove('leader_key', () => {
         const error = chrome.runtime.lastError;
         if (error) {

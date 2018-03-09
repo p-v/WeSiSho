@@ -35,8 +35,12 @@ class Main extends React.Component {
 
   onSaveShortcutClick() {
     this.setState({ addShortcut: false });
+
+    window.close(); // Close extension popup
+
     const keyValue = this.shortcutInput.value;
     const description = this.shortcutDescInput.value;
+
     chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
       const url = tabs[0].url;
       const key = keyValue;

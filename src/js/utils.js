@@ -1,24 +1,11 @@
+import swal from 'sweetalert2';
 
-const getPathTo = (element) => {
-  if (element.id !== '') {
-    return `#${element.id}`;
-  }
-  if (element === document.body) {
-    return element.tagName;
-  }
+const WESISHO = 'WeSiSho';
 
-  let ix = 0;
-  const siblings = element.parentNode.childNodes;
-  for (let i = 0; i < siblings.length; i += 1) {
-    const sibling = siblings[i];
-    if (sibling === element) {
-      return getPathTo(element.parentNode) + ' ' + element.tagName + ':nth-child(' + (ix + 1) + ')';
-    }
-    if (sibling.nodeType === 1 && sibling.tagName === element.tagName) {
-      ix += 1;
-    }
-  }
-  return null;
+export const showErrorMessage = (message) => {
+  swal(WESISHO, message, 'error');
 };
 
-export default { getPathTo };
+export const showSuccessMessage = (message) => {
+  swal(WESISHO, message, 'success');
+};

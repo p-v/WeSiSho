@@ -1,8 +1,7 @@
-import swal from 'sweetalert2';
 import Shortcuts from './shortcut';
 import Logger from './logger';
+import { showErrorMessage, showSuccessMessage } from './utils';
 
-const WESISHO = 'WeSiSho';
 const COMMAND_SET = 'Command set successfully';
 const COMMAND_ERROR = 'Looks like there is some error in the script or the html has been changed';
 
@@ -36,7 +35,7 @@ const saveToLocalStorage = (baseUrl, url, key, description) => {
     }
     chrome.storage.local.set({ shortcuts }, () => {
       // Notify that we saved.
-      swal(WESISHO, COMMAND_SET, 'success');
+      showSuccessMessage(COMMAND_SET);
     });
   });
 };
@@ -81,7 +80,7 @@ const performAction = (request) => {
         // Perform the predefined set of instructions
         domainJson[key].perform();
       } catch (err) {
-        swal(WESISHO, COMMAND_ERROR, 'error');
+        showErrorMessage(COMMAND_ERROR);
       }
     }
   } else {
