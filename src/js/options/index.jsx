@@ -18,7 +18,7 @@ class Main extends React.Component {
     // configure leader key
     chrome.storage.local.get('leader_key', (res) => {
       if (res) {
-        this.leaderInput.value = String.fromCharCode(res.leader_key);
+        this.leaderInput.value = res.leader_key;
       }
     });
   }
@@ -26,10 +26,9 @@ class Main extends React.Component {
   onLeaderSave() {
     // get leader value
     const leaderVal = this.leaderInput.value;
-    const leaderCode = leaderVal && (leaderVal.charCodeAt(0));
 
-    if (leaderCode) {
-      chrome.storage.local.set({ leader_key: leaderCode }, () => {
+    if (leaderVal) {
+      chrome.storage.local.set({ leader_key: leaderVal }, () => {
         showSuccessMessage(LEADER_SAVED);
       });
     } else {

@@ -4,21 +4,22 @@ import Logger from './logger';
 
 /*
  * Get leader key from chrome storage.
- * Defaults to ',' i.e. (key code 44)
+ * Defaults to ','
  */
 let leaderKey;
 chrome.storage.local.get('leader_key', (res) => {
-  leaderKey = res.leader_key || 44;
+  leaderKey = res.leader_key || ',';
 });
 
 
-const LEADER_TIMEOUT = 2000; // 2 seconds
+const LEADER_TIMEOUT = 5000; // 2 seconds
 const SEQUENCE_TIMEOUT = 1000; // 1 second
 
 let leaderTimeoutId;
 let sequenceTimeoutId;
 let isListeningForKeyPresses = false;
 let sequence = []; // The sequence of characters entered after pressing leader
+const handled = {};
 
 /*
  * Send key event for 'i' to enable insert mode in vimium
@@ -29,10 +30,22 @@ function vimiumPatch() {
   window.dispatchEvent(new KeyboardEvent('keyup', { key: 'i' }));
 }
 
-window.addEventListener('keypress', (e) => {
+window.addEventListener('keyup', (e) => {
+  if (handled[e.key]) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    delete handled[e.key];
+  }
+});
+
+
+window.addEventListener('keydown', (e) => {
   if (document.activeElement.tagName === 'INPUT') return;
 
-  if (!isListeningForKeyPresses && e.keyCode === leaderKey) {
+  if (!isListeningForKeyPresses && e.key === leaderKey) {
+    handled[e.key] = true;
+    e.preventDefault();
+    e.stopImmediatePropagation();
     // TODO check if the user uses vimium
     vimiumPatch();
 
@@ -47,6 +60,9 @@ window.addEventListener('keypress', (e) => {
       isListeningForKeyPresses = false;
     }, LEADER_TIMEOUT);
   } else if (isListeningForKeyPresses && e.keyCode !== null) {
+    handled[e.key] = true;
+    e.preventDefault();
+    e.stopImmediatePropagation();
     Logger.log('Leader and sequence timeout cleared');
     clearTimeout(leaderTimeoutId);
     if (sequenceTimeoutId) {
