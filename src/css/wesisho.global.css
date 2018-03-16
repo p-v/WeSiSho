@@ -5,6 +5,7 @@ textarea:focus, input:focus{
 input {
   border: 1px solid #cccccc;
   padding: 5px;
+  border-radius: 2px;
 }
 
 textarea {
@@ -12,4 +13,19 @@ textarea {
   border: 1px solid #cccccc;
   padding: 5px;
   resize: none;
+  border-radius: 2px;
+}
+
+button {
+  opacity: 1;
+  border: none;
+  background: #0366d6;
+  color: white;
+  border-radius: 2px;
+  padding: 5px;
+  min-width: 100px;
+}
+ 
+ button:hover {
+  opacity: 0.75;
 }

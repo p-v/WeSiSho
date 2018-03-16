@@ -83,7 +83,6 @@ window.addEventListener('keydown', (e) => {
 
 
 chrome.runtime.onMessage.addListener(Handler.onUrlReceive);
-
 /*
 document.addEventListener('mousedown', (event) => {
   if (event.button === 0) {

@@ -1,6 +1,10 @@
-.save-button {
-  margin-left: 10px;
-  float:right;
+.save-button, .cancel-button {
+  min-width: 50px;
+  width: 50px;
+}
+
+.cancel-button {
+  margin-left: 5px;
 }
 
 .shortcut-input, .shortcut-description {
@@ -9,4 +13,8 @@
 
 .shortcut-description {
   margin-top: 10px;
+}
+
+.option-container > button {
+  margin: 5px;
 }

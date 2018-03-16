@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 import '../../css/wesisho.global.css';
-import { shortcutInput, shortcutDescription, saveButton } from './style.css';
+import { shortcutInput, shortcutDescription, saveButton, optionContainer, cancelButton } from './style.css';
 
 class Main extends React.Component {
 
@@ -9,9 +9,22 @@ class Main extends React.Component {
     super();
     this.state = {
       addShortcut: false,
+      createShortcut: false,
+      recording: false,
     };
     this.onAddButtonClick = this.onAddButtonClick.bind(this);
     this.onSaveShortcutClick = this.onSaveShortcutClick.bind(this);
+    this.onRecordClick = this.onRecordClick.bind(this);
+    this.onCreateShortcutClick = this.onCreateShortcutClick.bind(this);
+    this.onCancelSaveShortcutClick = this.onCancelSaveShortcutClick.bind(this);
+  }
+
+  componentDidMount() {
+    chrome.storage.local.get('recording', (res) => {
+      if (res) {
+        this.setState({ recording: res.recording });
+      }
+    });
   }
 
   onAddButtonClick() {
@@ -33,24 +46,46 @@ class Main extends React.Component {
     });
   }
 
+  onRecordClick() {
+    this.setState({ recording: !this.state.recording });
+
+    chrome.storage.local.set({ recording: !this.state.recording });
+  }
+
+  onCreateShortcutClick() {
+    this.setState({ createShortcut: true });
+  }
+
+  onCancelSaveShortcutClick() {
+    this.setState({ createShortcut: false });
+  }
+
   render() {
+    const { createShortcut, recording } = this.state;
     return (
       <div>
-        <input
-          ref={(shortcutInputV) => { this.shortcutInput = shortcutInputV; }}
-          type="text"
-          maxLength={10}
-          className={shortcutInput}
-          placeholder="Set shortcut for page"
-          autoFocus
-        />
-        <textarea
-          ref={(shortcutDescInput) => { this.shortcutDescInput = shortcutDescInput; }}
-          className={shortcutDescription}
-          type="text"
-          placeholder="Add description for shortcut"
-        />
-        <button className={saveButton} onClick={this.onSaveShortcutClick}>{'Save'}</button>
+        { !createShortcut && <div className={optionContainer}>
+          <button onClick={this.onRecordClick}>{recording ? 'Stop Recording' : 'Record'}</button>
+          { !recording && <button onClick={this.onCreateShortcutClick}>{'Create Shortcut'}</button> }
+        </div> }
+        { createShortcut && <div>
+          <input
+            ref={(shortcutInputV) => { this.shortcutInput = shortcutInputV; }}
+            type="text"
+            maxLength={10}
+            className={shortcutInput}
+            placeholder="Set shortcut for page"
+            autoFocus
+          />
+          <textarea
+            ref={(shortcutDescInput) => { this.shortcutDescInput = shortcutDescInput; }}
+            className={shortcutDescription}
+            type="text"
+            placeholder="Add description for shortcut"
+          />
+          <button className={saveButton} onClick={this.onSaveShortcutClick}>{'Save'}</button>
+          <button className={cancelButton} onClick={this.onCancelSaveShortcutClick}>{'Cancel'}</button>
+        </div> }
       </div>
     );
   }
