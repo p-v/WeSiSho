@@ -1,6 +1,6 @@
+import CssSelectorGenerator from 'css-selector-generator';
 import Handler from './url-handler';
 import Logger from './logger';
-// import Utils from './utils';
 
 /*
  * Get leader key from chrome storage.
@@ -20,6 +20,8 @@ let sequenceTimeoutId;
 let isListeningForKeyPresses = false;
 let sequence = []; // The sequence of characters entered after pressing leader
 const handled = {};
+
+const cssSelectorGenerator = new CssSelectorGenerator();
 
 /*
  * Send key event for 'i' to enable insert mode in vimium
@@ -83,19 +85,18 @@ window.addEventListener('keydown', (e) => {
 
 
 chrome.runtime.onMessage.addListener(Handler.onUrlReceive);
-/*
+
 document.addEventListener('mousedown', (event) => {
   if (event.button === 0) {
     const clickedEl = event.target;
-    chrome.storage.local.get('record', (res) =>{
-      const isRecording = res && res.record;
+    chrome.storage.local.get(['recording', 'activeRecording'], (res) => {
+      const isRecording = res && res.recording;
       if (isRecording) {
-        const record = res.record;
-        record.links.push(Utils.getPathTo(clickedEl))
-        chrome.storage.local.set({ record });
-        Logger.log(Utils.getPathTo(clickedEl));
+        const selector = cssSelectorGenerator.getSelector(clickedEl);
+
+        const activeRecording = (res && res.activeRecording) || [];
+        chrome.storage.local.set({ activeRecording: [...activeRecording, selector] });
       }
     });
   }
 }, true);
-*/

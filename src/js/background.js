@@ -14,5 +14,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
 // Reset `recording` flag on tag change
 chrome.tabs.onActivated.addListener(() => {
-  chrome.storage.local.set({ recording: false });
+  chrome.storage.local.set({
+    recording: false,
+    activeRecording: []
+  });
 });

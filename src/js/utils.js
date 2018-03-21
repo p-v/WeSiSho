@@ -10,6 +10,15 @@ export const showSuccessMessage = (message) => {
   swal(WESISHO, message, 'success');
 };
 
+export const showTimedMessage = (message, timeout = 2000) => {
+  swal({
+    title: WESISHO,
+    text: message,
+    showConfirmButton: false,
+    timer: timeout,
+  });
+};
+
 export const showConfirmationMessage = (title, message, callback, confirmButtonText = 'Ok') => {
   swal({
     title,

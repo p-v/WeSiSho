@@ -1,6 +1,6 @@
 import Shortcuts from './shortcut';
 import Logger from './logger';
-import { showErrorMessage, showSuccessMessage, showConfirmationMessage, getBaseUrl } from './utils';
+import { showErrorMessage, showSuccessMessage, showConfirmationMessage, showTimedMessage, getBaseUrl } from './utils';
 
 const COMMAND_SET = 'Command set successfully';
 const COMMAND_ERROR = 'Looks like there is some error in the script or the html has been changed';
@@ -105,10 +105,12 @@ const onUrlReceive = (request) => {
   if (request.action) {
     if (request.action === 'save_url') {
       saveUrlCommand(request);
-    } else if (request.action === 'record') {
-      Logger.log('Record:');
     } else if (request.action === 'perform') {
       performAction(request);
+    } else if (request.action === 'save_recording') {
+      alert(request.refUrl);
+    } else if (request.action === 'error') {
+      showTimedMessage(request.message);
     }
   }
 };
