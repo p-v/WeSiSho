@@ -6,19 +6,24 @@ import { showErrorMessage, showSuccessMessage } from '../utils';
 
 const INVALID_KEY = 'Please enter a valid key';
 const LEADER_SAVED = 'Leader key saved';
+const LEADER_TIMEOUT_SAVED = 'Key timeout saved';
+
+const DEFAULT_TIMEOUT = 1000;
 
 class Main extends React.Component {
 
   constructor() {
     super();
     this.onLeaderSave = this.onLeaderSave.bind(this);
+    this.onLeaderTimeoutChange = this.onLeaderTimeoutChange.bind(this);
   }
 
   componentDidMount() {
     // configure leader key
-    chrome.storage.local.get('leader_key', (res) => {
+    chrome.storage.local.get(['leader_key', 'key_timeout'], (res) => {
       if (res) {
         this.leaderInput.value = res.leader_key;
+        this.timeoutSelector.value = res.key_timeout || DEFAULT_TIMEOUT;
       }
     });
   }
@@ -42,6 +47,13 @@ class Main extends React.Component {
     }
   }
 
+  onLeaderTimeoutChange(e) {
+    const value = e.target.value;
+    chrome.storage.local.set({ key_timeout: Number(value) }, () => {
+      showSuccessMessage(LEADER_TIMEOUT_SAVED);
+    });
+  }
+
   render() {
     return (
       <div>
@@ -61,6 +73,19 @@ class Main extends React.Component {
         >
           {'Save'}
         </button>
+        <div className={Style.timeoutDiv}>
+          <h4>{'Key timeout:'}</h4>
+          <select
+            name="timeinseconds"
+            ref={(timeoutSelector) => { this.timeoutSelector = timeoutSelector; }}
+            defaultValue={DEFAULT_TIMEOUT}
+            onChange={this.onLeaderTimeoutChange}
+          >
+            <option value="1000">{'1s'}</option>
+            <option value="1500">{'1.5s'}</option>
+            <option value="2000">{'2s'}</option>
+          </select>
+        </div>
         <WebShortcuts />
       </div>
     );
@@ -72,79 +97,3 @@ render(
   <Main />,
   document.getElementById('root')
 );
-
-
-/*
-const restore_options = () => {
-  // Use default value color = 'red' and likesColor = true.
-  chrome.storage.local.get('shortcuts', (result) => {
-    const shortcuts = result.shortcuts;
-    console.log(shortcuts);
-    let idx = 0;
-    for (const key in shortcuts) {
-      if ({}.hasOwnProperty.call(shortcuts, key)) {
-        idx += 1;
-        const titleId = `site-${idx}`;
-        const contentId = `content-${idx}`;
-        const tree = document.querySelector('#tree');
-        tree.innerHTML += `<div id="${titleId}" class="sites" data-toggle="collapse" data-target="#${contentId}">${key}</div>`;
-        tree.innerHTML += `<div id="${contentId}" class="collapse form-horizontal"></div>`;
-        let idxInr = 0
-        for (const s in shortcuts[key]) {
-          if ({}.hasOwnProperty.call(shortcuts[key], s)) {
-            const row = `${shortcuts[key][s].url}`;
-            idxInr += 1;
-            const removeRowId = `rem-${contentId}-${idxInr}`;
-            const editRowId = `edit-${contentId}-${idxInr}`;
-            const rowId = `row-${contentId}-${idxInr}`;
-            const inputId = `input-${contentId}-${idxInr}`;
-            const contentDiv = document.querySelector(`#${contentId}`);
-            contentDiv.innerHTML += `<div id="${rowId}" class="form-group"><div for="${editRowId}" class="col-md-4 control-label">${row}</div>
-                                      <div class="col-md-2"><input id="${inputId}" class="form-control" maxlength="1" placeholder="Press key for shortcut" type="text" value="${s}">
-                                      </div>  <div id="${removeRowId}" class="glyphicon glyphicon-remove modifier col-md-1 cross-icon" aria-hidden="true"></div></div>`;
-            document.querySelector(`#${removeRowId}`).click(() => {
-              let deleteKey = false;
-              if ($(`#${contentId}`).children().length === 1) {
-                $(`#${titleId}`).remove();
-                deleteKey = true;
-              }
-              $(`#${rowId}`).remove();
-              chrome.storage.local.get('shortcuts', (result) => {
-                const shortcuts = result.shortcuts;
-                if (deleteKey) {
-                  delete shortcuts[key];
-                } else {
-                  delete shortcuts[key][s];
-                }
-                // update local storage
-                chrome.storage.local.set({ shortcuts }, () => {
-                  // Notify that we saved.
-                  window.alert('Settings saved');
-                });
-              });
-            });
-            $(`#${inputId}`).on('input',(e) => {
-              const saveId = `save-${contentId}-${idxInr}`;
-              if (!$(`#${saveId}`).length) {
-                $(`#${rowId}`).append(`<span id="${saveId}" class="glyphicon glyphicon-ok modifier col-md-1" aria-hidden="true"></span>`);
-                $(`#${saveId}`).click(() =>{
-                  const newShortcut = $(`#${inputId}`).val();
-                  chrome.storage.local.get('shortcuts', (result) => {
-                    const shortcuts = result.shortcuts;
-                    shortcuts[key][newShortcut] = shortcuts[key][s];
-                    delete shortcuts[key][s];
-                    // update local storage
-                    chrome.storage.local.set({ shortcuts }, () => {
-                      // Notify that we saved.
-                      window.alert('Settings saved');
-                    });
-                  });
-                });
-              }
-            });
-          }
-        }
-      }
-    }
-  });
-}*/

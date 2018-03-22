@@ -20,3 +20,11 @@ body {
 .shortcuts-root {
   margin-top: 40px;
 }
+
+.timeout-div > * {
+  display: inline-block;
+}
+
+.timeout-div > select {
+  margin-left: 10px;
+}

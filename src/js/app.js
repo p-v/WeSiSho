@@ -2,18 +2,20 @@ import CssSelectorGenerator from 'css-selector-generator';
 import Handler from './url-handler';
 import Logger from './logger';
 
+const KEY_TIMEOUT = 1000; // 2 seconds
+
 /*
- * Get leader key from chrome storage.
- * Defaults to ','
+ * Get leader key and timeout from chrome storage.
+ * key Defaults to ','
+ * timeout Defaults to '1000'
  */
-let leaderKey;
-chrome.storage.local.get('leader_key', (res) => {
+let leaderKey = ',';
+let leaderTimeout = KEY_TIMEOUT;
+chrome.storage.local.get(['leader_key', 'key_timeout'], (res) => {
   leaderKey = res.leader_key || ',';
+  leaderTimeout = res.key_timeout || KEY_TIMEOUT;
 });
 
-
-const LEADER_TIMEOUT = 5000; // 2 seconds
-const SEQUENCE_TIMEOUT = 1000; // 1 second
 
 let leaderTimeoutId;
 let sequenceTimeoutId;
@@ -55,12 +57,12 @@ window.addEventListener('keydown', (e) => {
     isListeningForKeyPresses = true;
     sequence = [];
 
-    Logger.log('Leader timeout started for 2 secs');
+    Logger.log('Leader timeout started for 1 secs');
 
     leaderTimeoutId = setTimeout(() => {
       Logger.log('Leader timed out');
       isListeningForKeyPresses = false;
-    }, LEADER_TIMEOUT);
+    }, leaderTimeout);
   } else if (isListeningForKeyPresses && e.keyCode !== null) {
     handled[e.key] = true;
     e.preventDefault();
@@ -79,7 +81,7 @@ window.addEventListener('keydown', (e) => {
       const charSequence = sequence.map(code => String.fromCharCode(code).toLowerCase());
       const key = charSequence.join('');
       chrome.runtime.sendMessage({ key, shift: false });
-    }, SEQUENCE_TIMEOUT);
+    }, leaderTimeout);
   }
 }, true);
 
