@@ -17,6 +17,7 @@ class Main extends React.Component {
     };
     this.onAddButtonClick = this.onAddButtonClick.bind(this);
     this.onSaveShortcutClick = this.onSaveShortcutClick.bind(this);
+    this.onSaveRecordingClick = this.onSaveRecordingClick.bind(this);
     this.onRecordClick = this.onRecordClick.bind(this);
     this.onCreateShortcutClick = this.onCreateShortcutClick.bind(this);
     this.onCancelSaveShortcutClick = this.onCancelSaveShortcutClick.bind(this);

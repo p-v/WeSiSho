@@ -20,29 +20,33 @@ module.exports = {
         loader: 'babel-loader',
         include: path.resolve(__dirname, '../src/js'),
         query: {
-          presets: ['env', 'react'],
-          plugins: ["transform-object-rest-spread"],
-        }
+          presets: [['env', {
+            targets: {
+              node: 'current',
+            },
+          }], 'react'],
+          plugins: ['transform-object-rest-spread'],
+        },
       },
       {
         test: /\.global\.css$/,
         use: [
           {
-            loader: 'style-loader'
+            loader: 'style-loader',
           },
           {
             loader: 'css-loader',
             options: {
               sourceMap: true,
             },
-          }
-        ]
+          },
+        ],
       },
       {
         test: /^((?!\.global).)*\.css$/,
         use: [
           {
-            loader: 'style-loader'
+            loader: 'style-loader',
           },
           {
             loader: 'css-loader',
@@ -52,9 +56,9 @@ module.exports = {
               camelCase: true,
               importLoaders: 1,
               localIdentName: '[name]__[local]__[hash:base64:5]',
-            }
+            },
           },
-        ]
+        ],
       },
       {
         test: /.woff$|.woff2$|.ttf$|.eot$|.svg$/,

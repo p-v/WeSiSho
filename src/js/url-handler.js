@@ -10,23 +10,51 @@ const showUrl = (url) => {
   window.open(url, '_self');
 };
 
+const lookForSelector = (selector, timeoutDuration = 2000) =>
+  new Promise((resolve) => {
+    let timeoutExpired = false;
+    const timeout = setTimeout(() => { timeoutExpired = true; }, timeoutDuration);
+    const interval = setInterval(() => {
+      const element = document.querySelector(selector);
+      if (element || timeoutExpired) {
+        clearInterval(interval);
+        clearTimeout(timeout);
+        resolve(element);
+      }
+    }, 200);
+  });
+
+const executeSelector = async ({ sequenceIndex, sequence }) => {
+  const element = await lookForSelector(sequence[sequenceIndex]);
+  if (element === null) {
+    showErrorMessage(COMMAND_ERROR);
+  } else {
+    chrome.runtime.sendMessage({ type: 'execute', sequence, sequenceIndex: sequenceIndex + 1 });
+  }
+  element.click();
+};
+
 const lookInLocalStorage = (baseUrl, url, key) => {
   chrome.storage.local.get('shortcuts', (result) => {
     const shortcuts = result.shortcuts;
     if (shortcuts && shortcuts[baseUrl] && shortcuts[baseUrl][key]) {
-      showUrl(shortcuts[baseUrl][key].url);
+      if (shortcuts[baseUrl][key].sequence) {
+        chrome.runtime.sendMessage({ type: 'execute', sequence: shortcuts[baseUrl][key].sequence, sequenceIndex: 0 });
+      } else {
+        showUrl(shortcuts[baseUrl][key].url);
+      }
     }
   });
 };
 
-const saveToLocalStorage = (baseUrl, url, key, description) => {
+const saveToLocalStorage = (baseUrl, url, key, description, sequence) => {
   // Save it using the Chrome extension storage API.
   chrome.storage.local.get('shortcuts', (result) => {
     let shortcuts = result.shortcuts;
     if (shortcuts && {}.hasOwnProperty.call(shortcuts, baseUrl)) {
       if (shortcuts[baseUrl][key]) {
         showConfirmationMessage('Shortcut already exist', 'Do you want to update it?', () => {
-          shortcuts[baseUrl][key] = { url, description };
+          shortcuts[baseUrl][key] = { url, description, sequence };
           chrome.storage.local.set({ shortcuts }, () => {
             // Notify that we saved.
             showSuccessMessage(COMMAND_SET);
@@ -34,10 +62,10 @@ const saveToLocalStorage = (baseUrl, url, key, description) => {
         });
         return;
       }
-      shortcuts[baseUrl][key] = { url, description };
+      shortcuts[baseUrl][key] = { url, description, sequence };
     } else {
       const keyObj = {};
-      keyObj[key] = { url, description };
+      keyObj[key] = { url, description, sequence };
       if (!shortcuts) {
         shortcuts = {};
       }
@@ -55,6 +83,13 @@ const saveUrlCommand = (request) => {
   const key = request.key;
   const description = request.description;
   saveToLocalStorage(baseUrl, request.url, key, description);
+};
+
+const saveSequence = (request) => {
+  const baseUrl = getBaseUrl(request.refUrl);
+  const key = request.key;
+  const description = request.description;
+  saveToLocalStorage(baseUrl, request.refUrl, key, description, request.selectors);
 };
 
 const performAction = (request) => {
@@ -108,9 +143,11 @@ const onUrlReceive = (request) => {
     } else if (request.action === 'perform') {
       performAction(request);
     } else if (request.action === 'save_recording') {
-      alert(request.refUrl);
+      saveSequence(request);
     } else if (request.action === 'error') {
       showTimedMessage(request.message);
+    } else if (request.action === 'execute_command') {
+      executeSelector(request);
     }
   }
 };
