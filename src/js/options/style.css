@@ -9,22 +9,31 @@ body {
 }
 
 .leader-input {
-  display: inline-block;
   width: 100px;
-}
-
-.save-button {
-  margin-left: 10px;
 }
 
 .shortcuts-root {
   margin-top: 40px;
 }
 
-.timeout-div > * {
-  display: inline-block;
+.arrow-up {
+  border-bottom: 4px solid black;
 }
 
-.timeout-div > select {
+.arrow-down {
+  border-top: 4px solid black;
+}
+
+.arrow-up, .arrow-down {
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  display: inline-block;
+  width: 0; 
+  height: 0; 
   margin-left: 10px;
+  margin-bottom: 2px;
+}
+
+.group-container > h3 {
+  display: inline-block;
 }

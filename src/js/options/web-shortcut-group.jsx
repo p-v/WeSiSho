@@ -1,5 +1,5 @@
 import React from 'react';
-import { sites } from './style.css';
+import { sites, arrowUp, arrowDown, groupContainer } from './style.css';
 import ShortcutItem from './shortcut-item.jsx';
 
 export default class WebShortcutGroup extends React.Component {
@@ -18,6 +18,7 @@ export default class WebShortcutGroup extends React.Component {
 
   render() {
     const { base, shortcuts, onRemoveClick, onUpdateClick } = this.props;
+    const { expanded } = this.state;
 
     const rows = Object.keys(shortcuts)
     .map(shortcut =>
@@ -34,10 +35,11 @@ export default class WebShortcutGroup extends React.Component {
 
 
     return (
-      <div onClick={this.toggleItem}>
+      <div className={groupContainer} onClick={this.toggleItem}>
         <h3>{base}</h3>
+        <div className={expanded ? arrowUp: arrowDown} />
         <hr />
-        {rows}
+        {expanded && rows}
       </div>
     );
   }

@@ -23,54 +23,6 @@ export default class WebShortcuts extends React.Component {
     chrome.storage.local.get('shortcuts', (result) => {
       const shortcuts = result.shortcuts;
       this.setState({ shortcuts, showLoader: false });
-
-      /*
-      let idx = 0;
-      for (const key in shortcuts) {
-        if ({}.hasOwnProperty.call(shortcuts, key)) {
-          idx += 1;
-          const titleId = `site-${idx}`;
-          const contentId = `content-${idx}`;
-          const tree = document.querySelector('#tree');
-          tree.innerHTML += `<div id="${titleId}" class="sites" data-toggle="collapse" data-target="#${contentId}">${key}</div>`;
-          tree.innerHTML += `<div id="${contentId}" class="collapse form-horizontal"></div>`;
-          let idxInr = 0
-          for (const s in shortcuts[key]) {
-            if ({}.hasOwnProperty.call(shortcuts[key], s)) {
-              const row = `${shortcuts[key][s].url}`;
-              idxInr += 1;
-              const removeRowId = `rem-${contentId}-${idxInr}`;
-              const editRowId = `edit-${contentId}-${idxInr}`;
-              const rowId = `row-${contentId}-${idxInr}`;
-              const inputId = `input-${contentId}-${idxInr}`;
-              const contentDiv = document.querySelector(`#${contentId}`);
-              contentDiv.innerHTML += `<div id="${rowId}" class="form-group"><div for="${editRowId}" class="col-md-4 control-label">${row}</div>
-                                        <div class="col-md-2"><input id="${inputId}" class="form-control" maxlength="1" placeholder="Press key for shortcut" type="text" value="${s}">
-                                        </div>  <div id="${removeRowId}" class="glyphicon glyphicon-remove modifier col-md-1 cross-icon" aria-hidden="true"></div></div>`;
-              $(`#${inputId}`).on('input',(e) => {
-                const saveId = `save-${contentId}-${idxInr}`;
-                if (!$(`#${saveId}`).length) {
-                  $(`#${rowId}`).append(`<span id="${saveId}" class="glyphicon glyphicon-ok modifier col-md-1" aria-hidden="true"></span>`);
-                  $(`#${saveId}`).click(() =>{
-                    const newShortcut = $(`#${inputId}`).val();
-                    chrome.storage.local.get('shortcuts', (result) => {
-                      const shortcuts = result.shortcuts;
-                      shortcuts[key][newShortcut] = shortcuts[key][s];
-                      delete shortcuts[key][s];
-                      // update local storage
-                      chrome.storage.local.set({ shortcuts }, () => {
-                        // Notify that we saved.
-                        window.alert('Settings saved');
-                      });
-                    });
-                  });
-                }
-              });
-            }
-          }
-        }
-      }
-    */
     });
   }
 

@@ -59,33 +59,45 @@ class Main extends React.Component {
       <div>
         <h2>WeSiSho Options</h2>
         <hr />
-        <h4>Configure Leader Key:</h4>
-        <input
-          className={Style.leaderInput}
-          ref={(leaderInput) => { this.leaderInput = leaderInput; }}
-          type="text"
-          placeholder="Default ,"
-          maxLength={1}
-        />
-        <button
-          onClick={this.onLeaderSave}
-          className={Style.saveButton}
-        >
-          {'Save'}
-        </button>
-        <div className={Style.timeoutDiv}>
-          <h4>{'Key timeout:'}</h4>
-          <select
-            name="timeinseconds"
-            ref={(timeoutSelector) => { this.timeoutSelector = timeoutSelector; }}
-            defaultValue={DEFAULT_TIMEOUT}
-            onChange={this.onLeaderTimeoutChange}
-          >
-            <option value="1000">{'1s'}</option>
-            <option value="1500">{'1.5s'}</option>
-            <option value="2000">{'2s'}</option>
-          </select>
-        </div>
+        <table>
+          <tr>
+          <td>
+            <h4>Configure Leader Key:</h4>
+          </td>
+            <td>
+              <input
+                className={Style.leaderInput}
+                ref={(leaderInput) => { this.leaderInput = leaderInput; }}
+                type="text"
+                placeholder="Default ,"
+                maxLength={1}
+              />
+            </td>
+            <td>
+              <button onClick={this.onLeaderSave}>
+                {'Save'}
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <h4>{'Key timeout:'}</h4>
+            </td>
+            <td>
+              <select
+                name="timeinseconds"
+                ref={(timeoutSelector) => { this.timeoutSelector = timeoutSelector; }}
+                defaultValue={DEFAULT_TIMEOUT}
+                onChange={this.onLeaderTimeoutChange}
+              >
+                <option value="500">{'0.5s'}</option>
+                <option value="1000">{'1s'}</option>
+                <option value="1500">{'1.5s'}</option>
+                <option value="2000">{'2s'}</option>
+              </select>
+            </td>
+          </tr>
+        </table>
         <WebShortcuts />
       </div>
     );
