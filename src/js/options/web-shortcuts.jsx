@@ -102,7 +102,7 @@ export default class WebShortcuts extends React.Component {
       return (<h4>Loading...</h4>);
     }
 
-    if (Object.keys(shortcuts).length === 0) {
+    if (!shortcuts || Object.keys(shortcuts).length === 0) {
       return (<h4>{'No web shortcuts set so far'}</h4>);
     }
 

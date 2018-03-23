@@ -22,7 +22,7 @@ class Main extends React.Component {
     // configure leader key
     chrome.storage.local.get(['leader_key', 'key_timeout'], (res) => {
       if (res) {
-        this.leaderInput.value = res.leader_key;
+        this.leaderInput.value = res.leader_key || ',';
         this.timeoutSelector.value = res.key_timeout || DEFAULT_TIMEOUT;
       }
     });
