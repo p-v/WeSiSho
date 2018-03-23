@@ -4,7 +4,9 @@
   "description": "A chrome extension for adding shortcuts inside websites",
   "scripts": {
     "clean": "rm -rf build",
-    "build": "mkdir -p ./build/dev && webpack --config ./webpack/webpack.config.dev.js"
+    "dev": "mkdir -p ./build/dev && webpack --config ./webpack/webpack.config.dev.js",
+    "prod": "mkdir -p ./build/prod && webpack --config ./webpack/webpack.config.prod.js",
+    "crx": "npm run prod && cd build && crx pack prod -p ../key.pem -o WeSiSho-$npm_package_version.crx"
   },
   "author": "p-v",
   "license": "MIT",
@@ -21,6 +23,7 @@
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "copy-webpack-plugin": "^4.5.0",
+    "crx": "^3.2.1",
     "css-loader": "^0.28.10",
     "eslint": "^3.8.1",
     "eslint-config-airbnb": "^12.0.0",
@@ -30,6 +33,7 @@
     "file-loader": "^1.1.11",
     "lodash": "^4.17.5",
     "style-loader": "^0.20.2",
+    "uglifyjs-webpack-plugin": "^1.2.4",
     "webpack": "^2.6.1"
   }
 }

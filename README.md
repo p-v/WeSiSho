@@ -1,18 +1,17 @@
 WeSiSho
 ===
 
-**We**b **Si**tes **Sho**rtcuts is a chrome extension for adding shortcuts inside websites. 
-
+**We**b **Si**tes **Sho**rtcuts is a chrome extension for adding shortcuts and replaying click actions inside websites. 
 
 Press the leader(default `,`) and type the shortcut command to access the page quickly.
 
-### Build
-> npm run build
+Record complex click actions, like logout or opening settings, and save them to replay them later by just using a couple of keys.
 
-##### Work in Progress
+The extension can be downloaded from the [release page](https://github.com/p-v/WeSiSho/releases)
 
-#### TODOs
+To build from source,
 
-- Get rid of shortcut.js
-- Add a way to record actions
+> npm run prod
 
+For development,
+> npm run dev
