@@ -44,7 +44,7 @@ window.addEventListener('keyup', (e) => {
 
 
 window.addEventListener('keydown', (e) => {
-  if (document.activeElement.tagName === 'INPUT' || document.activeElement.contentEditable) return;
+  if (document.activeElement.tagName === 'INPUT' || document.activeElement.isContentEditable) return;
 
   if (!isListeningForKeyPresses && e.key === leaderKey) {
     handled[e.key] = true;
