@@ -4,6 +4,7 @@
   "description": "A chrome extension for adding shortcuts inside websites",
   "scripts": {
     "clean": "rm -rf build",
+    "debug": "mkdir -p ./build/debug && webpack --config ./webpack/webpack.config.debug.js",
     "dev": "mkdir -p ./build/dev && webpack --config ./webpack/webpack.config.dev.js",
     "prod": "mkdir -p ./build/prod && webpack --config ./webpack/webpack.config.prod.js",
     "crx": "npm run prod && cd build && crx pack prod -p ../key.pem -o WeSiSho-$npm_package_version.crx"

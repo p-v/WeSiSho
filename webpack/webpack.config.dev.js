@@ -18,5 +18,4 @@ module.exports = _.merge({}, config, {
       copyUnmodified: false,
     }),
   ],
-  watch: true,
 });
