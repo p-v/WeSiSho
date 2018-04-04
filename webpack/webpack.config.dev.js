@@ -6,6 +6,7 @@ const config = require('./config.js');
 
 module.exports = _.merge({}, config, {
   devtool: 'source-map',
+  mode: 'development',
   output: {
     path: path.resolve(__dirname, '../build/dev'),
   },

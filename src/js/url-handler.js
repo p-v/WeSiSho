@@ -34,7 +34,7 @@ const executeSelector = async ({ sequenceIndex, sequence }) => {
   element.click();
 };
 
-const lookInLocalStorage = (baseUrl, url, key) => {
+const lookInLocalStorage = (baseUrl, key) => {
   chrome.storage.local.get('shortcuts', (result) => {
     const shortcuts = result.shortcuts;
     if (shortcuts && shortcuts[baseUrl] && shortcuts[baseUrl][key]) {
@@ -92,15 +92,13 @@ const saveSequence = (request) => {
   saveToLocalStorage(baseUrl, request.refUrl, key, description, request.selectors);
 };
 
-const performAction = (request) => {
-  Logger.log(`Contentscript has received a message from from background script: '${request.url}' and key: ${request.key}`);
+const performAction = ({ url, key }) => {
+  Logger.log(`Contentscript has received a message from from background script: '${url}' and key: ${key}`);
 
-  const url = request.url;
   const regexp = /https?:\/\/([^/#]+)/gi;
   const match = regexp.exec(url);
   const domain = match[1].toLowerCase();
   Logger.log(`logging domain: ${domain}`);
-  const key = request.key;
 
   // Check in global variables
   const globalKeys = Shortcuts.global;
@@ -129,7 +127,7 @@ const performAction = (request) => {
     }
   } else {
     Logger.log('Searching in local storage');
-    lookInLocalStorage(domain, request.url, key);
+    lookInLocalStorage(domain, key);
   }
 };
 
