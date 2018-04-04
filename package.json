@@ -1,6 +1,6 @@
 {
   "name": "WeSiSho",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A chrome extension for adding shortcuts inside websites",
   "scripts": {
     "clean": "rm -rf build",
