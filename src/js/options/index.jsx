@@ -1,4 +1,5 @@
 import React from 'react';
+import '../../css/wesisho.global.css';
 import { render } from 'react-dom';
 import Style from './style.css';
 import WebShortcuts from './web-shortcuts.jsx';

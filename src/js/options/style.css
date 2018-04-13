@@ -37,3 +37,32 @@ body {
 .group-title > * {
   display: inline-block;
 }
+
+.item-header {
+  margin-top: 2px;
+}
+
+.item-header > * {
+  display: inline-block;
+}
+
+.item-header > button {
+  margin-left: 5px;
+}
+
+.item-header > textarea {
+  height: 70px;
+  width: 200px;
+}
+
+.remove-btn {
+  margin-left: 5px;
+}
+
+.description-button-container {
+  vertical-align: top;
+}
+
+.description-button-container > button {
+  margin-left: 5px;
+}

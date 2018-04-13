@@ -26,40 +26,39 @@ export default class WebShortcuts extends React.Component {
     });
   }
 
-  updateShortcut(key, prevShortcut, newShortcut, newShortcuts) {
-    newShortcuts[key][newShortcut] = newShortcuts[key][prevShortcut];
-    delete newShortcuts[key][prevShortcut];
-
-    this.setState({ shortcuts: newShortcuts });
-
-    chrome.storage.local.get('shortcuts', (result) => {
-      const storageShortcuts = result.shortcuts;
-      storageShortcuts[key][newShortcut] = storageShortcuts[key][prevShortcut];
-      delete storageShortcuts[key][prevShortcut];
-      // update local storage
-      chrome.storage.local.set({ shortcuts: storageShortcuts }, () => {
-        // Notify that we saved.
-        swal(WESISHO, SETTINGS_SAVED, 'success');
-      });
-    });
-  }
-
-  onUpdateClick(key, prevShortcut, newShortcut) {
+  onUpdateClick(key, prevShortcut, updatedObject) {
+    const { shortcut, description } = updatedObject;
     const { shortcuts } = this.state;
-
     const newShortcuts = {
       ...shortcuts,
     };
 
-    // Check if shortcut already exist
-    if (newShortcuts[key][newShortcut]) {
-      showConfirmationMessage('Shortcut already exist', 'Do you want to replace it?', () => {
-        delete newShortcuts[key][newShortcut];
-        this.updateShortcut(key, prevShortcut, newShortcut, newShortcuts);
-      });
-    }
+    if (shortcut === undefined) {
+      newShortcuts[key][prevShortcut].description = description;
+      this.setState({ shortcuts: newShortcuts });
 
-    this.updateShortcut(key, prevShortcut, newShortcut, newShortcuts);
+      chrome.storage.local.get('shortcuts', (result) => {
+        const storageShortcuts = result.shortcuts;
+        storageShortcuts[key][prevShortcut].description = description;
+        // update local storage
+        chrome.storage.local.set({ shortcuts: storageShortcuts }, () => {
+          // Notify that we saved.
+          swal(WESISHO, SETTINGS_SAVED, 'success');
+        });
+      });
+    } else {
+      const newShortcut = shortcut;
+
+      // Check if shortcut already exist
+      if (newShortcuts[key][newShortcut]) {
+        showConfirmationMessage('Shortcut already exist', 'Do you want to replace it?', () => {
+          delete newShortcuts[key][newShortcut];
+          this.updateShortcut(key, prevShortcut, newShortcut, newShortcuts);
+        });
+      } else {
+        this.updateShortcut(key, prevShortcut, newShortcut, newShortcuts);
+      }
+    }
   }
 
   onRemoveClick(key, shortcut) {
@@ -88,6 +87,24 @@ export default class WebShortcuts extends React.Component {
         delete storageShortcuts[key][shortcut];
       }
 
+      // update local storage
+      chrome.storage.local.set({ shortcuts: storageShortcuts }, () => {
+        // Notify that we saved.
+        swal(WESISHO, SETTINGS_SAVED, 'success');
+      });
+    });
+  }
+
+  updateShortcut(key, prevShortcut, newShortcut, newShortcuts) {
+    newShortcuts[key][newShortcut] = newShortcuts[key][prevShortcut];
+    delete newShortcuts[key][prevShortcut];
+
+    this.setState({ shortcuts: newShortcuts });
+
+    chrome.storage.local.get('shortcuts', (result) => {
+      const storageShortcuts = result.shortcuts;
+      storageShortcuts[key][newShortcut] = storageShortcuts[key][prevShortcut];
+      delete storageShortcuts[key][prevShortcut];
       // update local storage
       chrome.storage.local.set({ shortcuts: storageShortcuts }, () => {
         // Notify that we saved.
