@@ -720,6 +720,13 @@ camelcase@^5.0.0, camelcase@^5.3.1:
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-5.3.1.tgz#e3c9b31569e106811df242f715725a1f4c494320"
   integrity sha512-L28STB170nwWS63UjtlEOE3dldQApaJXZkOI1uMFfzf3rRuPegHaHesyee+YxQ+W6SvRDQV6UrdOdRiR153wJg==
 
+cartesian@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/cartesian/-/cartesian-1.0.1.tgz#ae3fc8a63e2ba7e2c4989ce696207457bcae65af"
+  integrity sha1-rj/Ipj4rp+LEmJzmliB0V7yuZa8=
+  dependencies:
+    xtend "^4.0.1"
+
 chalk@^2.0.0, chalk@^2.4.2:
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-2.4.2.tgz#cd42541677a54333cf541a49108c1432b44c9424"
@@ -1015,10 +1022,13 @@ css-loader@^3.6.0:
     schema-utils "^2.7.0"
     semver "^6.3.0"
 
-css-selector-generator@^1.0.2:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/css-selector-generator/-/css-selector-generator-1.2.0.tgz#5c8839ab3412d530d7548eda5168ecb799381b2c"
-  integrity sha512-LHj9xWzOBXy08JMUjEsG7MkEqLHcYFNGPMhAKxM2SzdDf7RLRFIT2JaJq3CHhHuLpHA+m4QfOjm5L+Yd+x9WLg==
+css-selector-generator@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/css-selector-generator/-/css-selector-generator-2.1.1.tgz#24ea45b41280fe5f5eee6ba4c6f0896e66814420"
+  integrity sha512-Nhs7OsaSb5D5UD4AXNyirKZBU2o6bPzkYRCSTDb6Iyd17zQO+lhffuUc4fWywF5E0hulkeCYf4qA08FuMl95CA==
+  dependencies:
+    cartesian "^1.0.1"
+    iselement "^1.1.4"
 
 cssesc@^3.0.0:
   version "3.0.0"
@@ -2121,6 +2131,11 @@ isarray@1.0.0, isarray@^1.0.0, isarray@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/isarray/-/isarray-1.0.0.tgz#bb935d48582cba168c06834957a54a3e07124f11"
   integrity sha1-u5NdSFgsuhaMBoNJV6VKPgcSTxE=
+
+iselement@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/iselement/-/iselement-1.1.4.tgz#7e55b52a8ebca50a7e2e80e5b8d2840f32353146"
+  integrity sha1-flW1Ko68pQp+LoDluNKEDzI1MUY=
 
 isexe@^2.0.0:
   version "2.0.0"
@@ -3967,7 +3982,7 @@ write@1.0.3:
   dependencies:
     mkdirp "^0.5.1"
 
-xtend@^4.0.0, xtend@~4.0.1:
+xtend@^4.0.0, xtend@^4.0.1, xtend@~4.0.1:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/xtend/-/xtend-4.0.2.tgz#bb72779f5fa465186b1f438f674fa347fdb5db54"
   integrity sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==

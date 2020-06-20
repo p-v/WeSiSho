@@ -1,6 +1,10 @@
-import CssSelectorGenerator from 'css-selector-generator';
+import getCssSelector from 'css-selector-generator';
 import Handler from './url-handler';
 import Logger from './logger';
+
+interface KeyIndex {
+    [key: string]: boolean;
+}
 
 const KEY_TIMEOUT = 1000; // 2 seconds
 
@@ -17,13 +21,11 @@ chrome.storage.local.get(['leader_key', 'key_timeout'], (res) => {
 });
 
 
-let leaderTimeoutId;
-let sequenceTimeoutId;
+let leaderTimeoutId: number;
+let sequenceTimeoutId: number;
 let isListeningForKeyPresses = false;
-let sequence = []; // The sequence of characters entered after pressing leader
-const handled = {};
-
-const cssSelectorGenerator = new CssSelectorGenerator();
+let sequence: number[] = []; // The sequence of characters entered after pressing leader
+const handled: KeyIndex = {};
 
 /*
  * Send key event for 'i' to enable insert mode in vimium
@@ -44,7 +46,7 @@ window.addEventListener('keyup', (e) => {
 
 
 window.addEventListener('keydown', (e) => {
-  const activeElement = document.activeElement;
+  const activeElement = document.activeElement as HTMLElement;
   if (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA' || activeElement.isContentEditable) return;
 
   if (!isListeningForKeyPresses && e.key === leaderKey) {
@@ -91,11 +93,11 @@ chrome.runtime.onMessage.addListener(Handler.onUrlReceive);
 
 document.addEventListener('mousedown', (event) => {
   if (event.button === 0) {
-    const clickedEl = event.target;
+    const clickedEl = event.target as HTMLElement;
     chrome.storage.local.get(['recording', 'activeRecording'], (res) => {
       const isRecording = res && res.recording;
       if (isRecording) {
-        const selector = cssSelectorGenerator.getSelector(clickedEl);
+        const selector = getCssSelector(clickedEl);
 
         const activeRecording = (res && res.activeRecording) || [];
         chrome.storage.local.set({ activeRecording: [...activeRecording, selector] });
