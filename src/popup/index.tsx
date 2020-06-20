@@ -1,6 +1,6 @@
 import React, {Component, createRef} from 'react';
 import { render } from 'react-dom';
-import '../../css/wesisho.global.css';
+import '../css/wesisho.global.css';
 import { shortcutInput, shortcutDescription, saveButton, optionContainer, cancelButton } from './style.css';
 
 const SHORTCUT_EMPTY = 'Oops! Looks like no shortcut has been set';

@@ -1,6 +1,6 @@
 import React from 'react';
 import { arrowUp, arrowDown, groupTitle } from './style.css';
-import ShortcutItem from './shortcut-item.jsx';
+import ShortcutItem from './shortcut-item';
 
 type Shortcut = {
     url: string;

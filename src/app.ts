@@ -62,7 +62,7 @@ window.addEventListener('keydown', (e) => {
 
     Logger.log('Leader timeout started for 1 secs');
 
-    leaderTimeoutId = setTimeout(() => {
+    leaderTimeoutId = <any>setTimeout(() => {
       Logger.log('Leader timed out');
       isListeningForKeyPresses = false;
     }, leaderTimeout);
@@ -78,7 +78,7 @@ window.addEventListener('keydown', (e) => {
     sequence.push(e.keyCode);
     isListeningForKeyPresses = true;
 
-    sequenceTimeoutId = setTimeout(() => {
+    sequenceTimeoutId = <any>setTimeout(() => {
       Logger.log('Sequence timed out');
       isListeningForKeyPresses = false;
       const charSequence = sequence.map(code => String.fromCharCode(code).toLowerCase());
