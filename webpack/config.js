@@ -2,31 +2,23 @@ const path = require('path');
 
 module.exports = {
   entry: {
-    background: './src/js/background',
-    app: './src/js/app',
-    options: './src/js/options/index.jsx',
-    popup: './src/js/popup/index.jsx',
+    background: './src/background/index.ts',
+    app: './src/app.ts',
+    options: './src/options/index.tsx',
+    popup: './src/popup/index.tsx',
   },
   output: {
     filename: './js/[name].js',
   },
   resolve: {
-    modules: [path.join(__dirname, 'src'), 'node_modules'],
+    extensions: ['.tsx', '.ts', '.js'],
   },
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
-        loader: 'babel-loader',
-        include: path.resolve(__dirname, '../src/js'),
-        query: {
-          presets: [['env', {
-            targets: {
-              node: 'current',
-            },
-          }], 'react'],
-          plugins: ['transform-object-rest-spread'],
-        },
+        test: /\.tsx?$/,
+        loader: 'ts-loader',
+        exclude: /node_modules/,
       },
       {
         test: /\.global\.css$/,
@@ -51,11 +43,13 @@ module.exports = {
           {
             loader: 'css-loader',
             options: {
+              modules: {
+                localIdentName: '[name]__[local]__[hash:base64:5]',
+              },
+              localsConvention: 'camelCase',
               modules: true,
               sourceMap: true,
-              camelCase: true,
-              importLoaders: 1,
-              localIdentName: '[name]__[local]__[hash:base64:5]',
+              importLoaders: 2,
             },
           },
         ],

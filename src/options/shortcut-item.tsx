@@ -1,10 +1,23 @@
-import React from 'react';
-import { icon } from './style.css';
+import React, {createRef} from 'react';
 
-export default class ShortcutItem extends React.Component {
+type ShortcutItemState = {
+  showSaveIcon: boolean;
+}
 
-  constructor() {
-    super();
+type ShortcutItemProps = {
+  base: string;
+  description: string;
+  shortcut: string;
+  title: string;
+  onUpdateClick: (a: string, b: string, c: string) => void;
+  onRemoveClick: (a: string, b: string) => void;
+}
+
+export default class ShortcutItem extends React.Component<ShortcutItemProps, ShortcutItemState> {
+  private shortcutInput = createRef<HTMLInputElement>();
+
+  constructor(props: ShortcutItemProps) {
+    super(props);
     this.state = {
       showSaveIcon: false,
     };
@@ -19,7 +32,10 @@ export default class ShortcutItem extends React.Component {
   }
 
   onSave() {
-    this.props.onUpdateClick(this.props.base, this.props.shortcut, this.shortcutInput.value);
+    if (this.shortcutInput.current) {
+      this.props.onUpdateClick(this.props.base, this.props.shortcut,
+        this.shortcutInput.current.value);
+    }
   }
 
   render() {
@@ -31,7 +47,7 @@ export default class ShortcutItem extends React.Component {
     <div>
       <h5>{displayTitle}</h5>
       <input
-        ref={(shortcutInput) => { this.shortcutInput = shortcutInput; }}
+        ref={this.shortcutInput}
         onChange={this.onChange}
         type="text"
         maxLength={10}

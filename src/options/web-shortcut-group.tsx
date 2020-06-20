@@ -1,11 +1,31 @@
 import React from 'react';
-import { sites, arrowUp, arrowDown, groupTitle } from './style.css';
-import ShortcutItem from './shortcut-item.jsx';
+import { arrowUp, arrowDown, groupTitle } from './style.css';
+import ShortcutItem from './shortcut-item';
 
-export default class WebShortcutGroup extends React.Component {
+type Shortcut = {
+    url: string;
+    description: string;
+}
 
-  constructor() {
-    super();
+export interface ShortcutIndex {
+    [key: string]: Shortcut;
+}
+
+type WebShortcutGroupProps = {
+    base: string;
+    shortcuts: ShortcutIndex;
+    onRemoveClick: (a: string, b: string) => void
+    onUpdateClick: (a: string, b: string, c: string) => void
+}
+
+type WebShortcutGroupState = {
+    expanded: boolean;
+}
+
+export default class WebShortcutGroup extends React.Component<WebShortcutGroupProps, WebShortcutGroupState> {
+
+  constructor(props: WebShortcutGroupProps) {
+    super(props);
     this.state = {
       expanded: false,
     };
@@ -32,7 +52,6 @@ export default class WebShortcutGroup extends React.Component {
         onUpdateClick={onUpdateClick}
       />
     );
-
 
     return (
       <div>
