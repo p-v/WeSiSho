@@ -23,5 +23,10 @@
     "page": "html/options.html",
     "chrome_style": true,
     "open_in_tab": true
+  },
+  "icons": {
+    "16": "icons/wesisho16.png",
+    "48": "icons/wesisho48.png",
+    "128": "icons/wesisho128.png"
   }
 }

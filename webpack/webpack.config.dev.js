@@ -30,6 +30,7 @@ module.exports = _.merge({}, config, {
     }),
     new CopyWebpackPlugin([
       { from: './node_modules/sweetalert2/dist/sweetalert2.min.css', to: './css/' },
+      { from: './icons', to: './icons' },
     ], {
       ignore: ['js/**/*'],
       copyUnmodified: false,
