@@ -28,11 +28,11 @@ class Main extends React.Component {
                 const timeoutNode = this.timeoutSelector.current;
 
                 if (leaderNode) {
-                    leaderNode.value = res.leader_key;
+                    leaderNode.value = res.leader_key || ',';
                 }
 
                 if (timeoutNode) {
-                    timeoutNode.value = res.key_timeout;
+                    timeoutNode.value = res.key_timeout || DEFAULT_TIMEOUT;
                 }
             }
         });
