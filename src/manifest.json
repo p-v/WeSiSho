@@ -7,11 +7,7 @@
   "browser_action": {
     "default_popup": "html/popup.html"
   },
-  "permissions": [
-    "activeTab", "storage",
-    "https://ajax.googleapis.com/",
-    "http://*/*", "tabs"
-  ],
+  "permissions": ["activeTab", "storage", "tabs"],
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"], 
