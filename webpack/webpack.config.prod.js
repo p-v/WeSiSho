@@ -10,7 +10,7 @@ module.exports = _.merge({}, config, {
   devtool: 'source-map',
   mode: 'development',
   output: {
-    path: path.resolve(__dirname, '../build/dev'),
+    path: path.resolve(__dirname, '../build/prod'),
   },
   plugins: [
     new HtmlWebpackPlugin({
