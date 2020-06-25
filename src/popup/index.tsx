@@ -18,6 +18,7 @@ class Main extends Component<unknown, PopupState> {
   private refUrlInput = createRef<HTMLInputElement>();
   private shortcutInput = createRef<HTMLInputElement>();
   private shortcutDescInput = createRef<HTMLTextAreaElement>();
+  private _isMounted = false;
 
   constructor(props: unknown) {
     super(props);
@@ -38,11 +39,16 @@ class Main extends Component<unknown, PopupState> {
   }
 
   componentDidMount() {
+    this._isMounted = true;
     chrome.storage.local.get('recording', (res) => {
-      if (res) {
+      if (this._isMounted && res) {
         this.setState({ recording: res.recording });
       }
     });
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   onAddButtonClick() {
