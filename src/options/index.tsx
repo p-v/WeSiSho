@@ -10,12 +10,15 @@ const LEADER_TIMEOUT_SAVED = 'Key timeout saved';
 
 const DEFAULT_TIMEOUT = 1000;
 
-class Main extends React.Component {
+type OptionsState = {
+};
+
+class Main extends React.Component<unknown, OptionsState> {
     private leaderInput = createRef<HTMLInputElement>();
     private timeoutSelector = createRef<HTMLSelectElement>();
 
-    constructor() {
-        super({});
+    constructor(props: unknown) {
+        super(props);
         this.onLeaderSave = this.onLeaderSave.bind(this);
         this.onLeaderTimeoutChange = this.onLeaderTimeoutChange.bind(this);
     }
@@ -72,43 +75,45 @@ class Main extends React.Component {
                 <h2>WeSiSho Options</h2>
                 <hr />
                 <table>
-                    <tr>
-                        <td>
-                            <h4>Configure Leader Key:</h4>
-                        </td>
-                        <td>
-                            <input
-                                className={Style.leaderInput}
-                                ref={this.leaderInput}
-                                type="text"
-                                placeholder="Default ,"
-                                maxLength={1}
-                            />
-                        </td>
-                        <td>
-                            <button onClick={this.onLeaderSave}>
-                                {'Save'}
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <h4>{'Key timeout:'}</h4>
-                        </td>
-                        <td>
-                            <select
-                                name="timeinseconds"
-                                ref={this.timeoutSelector}
-                                defaultValue={DEFAULT_TIMEOUT}
-                                onChange={this.onLeaderTimeoutChange}
-                            >
-                                <option value="500">{'0.5s'}</option>
-                                <option value="1000">{'1s'}</option>
-                                <option value="1500">{'1.5s'}</option>
-                                <option value="2000">{'2s'}</option>
-                            </select>
-                        </td>
-                    </tr>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <h4>Configure Leader Key:</h4>
+                            </td>
+                            <td>
+                                <input
+                                    className={Style.leaderInput}
+                                    ref={this.leaderInput}
+                                    type="text"
+                                    placeholder="Default ,"
+                                    maxLength={1}
+                                />
+                            </td>
+                            <td>
+                                <button onClick={this.onLeaderSave}>
+                                    {'Save'}
+                                </button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h4>{'Key timeout:'}</h4>
+                            </td>
+                            <td>
+                                <select
+                                    name="timeinseconds"
+                                    ref={this.timeoutSelector}
+                                    defaultValue={DEFAULT_TIMEOUT}
+                                    onChange={this.onLeaderTimeoutChange}
+                                >
+                                    <option value="500">{'0.5s'}</option>
+                                    <option value="1000">{'1s'}</option>
+                                    <option value="1500">{'1.5s'}</option>
+                                    <option value="2000">{'2s'}</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </tbody>
                 </table>
                 <WebShortcuts />
             </div>

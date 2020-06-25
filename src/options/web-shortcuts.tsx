@@ -30,9 +30,10 @@ type WebShortcutsState = {
 }
 
 export default class WebShortcuts extends Component<WebShortcutsProps, WebShortcutsState> {
+    private _isMounted = false;
 
-    constructor() {
-        super({});
+    constructor(props: WebShortcutsProps) {
+        super(props);
         this.state = {
             showLoader: true,
             shortcuts: {},
@@ -42,10 +43,17 @@ export default class WebShortcuts extends Component<WebShortcutsProps, WebShortc
     }
 
     componentDidMount(): void {
+        this._isMounted = true;
         chrome.storage.local.get('shortcuts', (result) => {
             const shortcuts = result.shortcuts;
-            this.setState({ shortcuts, showLoader: false });
+            if (this._isMounted) {
+                this.setState({ shortcuts, showLoader: false });
+            }
         });
+    }
+
+    componentWillUnmount(): void {
+        this._isMounted = false;
     }
 
     updateShortcut(key: string, prevShortcut: string, newShortcut: string, newShortcuts: SiteIndex): void {

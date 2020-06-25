@@ -19,8 +19,8 @@ class Main extends Component<unknown, PopupState> {
   private shortcutInput = createRef<HTMLInputElement>();
   private shortcutDescInput = createRef<HTMLTextAreaElement>();
 
-  constructor() {
-    super({});
+  constructor(props: unknown) {
+    super(props);
     this.state = {
       addShortcut: false,
       createShortcut: false,
