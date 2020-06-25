@@ -27,15 +27,6 @@ let isListeningForKeyPresses = false;
 let sequence: number[] = []; // The sequence of characters entered after pressing leader
 const handled: KeyIndex = {};
 
-/*
- * Send key event for 'i' to enable insert mode in vimium
- */
-function vimiumPatch() {
-  window.dispatchEvent(new KeyboardEvent('keydown', { key: 'i' }));
-  window.dispatchEvent(new KeyboardEvent('keypress', { key: 'i' }));
-  window.dispatchEvent(new KeyboardEvent('keyup', { key: 'i' }));
-}
-
 window.addEventListener('keyup', (e) => {
   if (handled[e.key]) {
     e.preventDefault();
@@ -53,8 +44,6 @@ window.addEventListener('keydown', (e) => {
     handled[e.key] = true;
     e.preventDefault();
     e.stopImmediatePropagation();
-    // TODO check if the user uses vimium
-    vimiumPatch();
 
     // Now listening for sequence
     isListeningForKeyPresses = true;
