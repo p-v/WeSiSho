@@ -1,26 +1,29 @@
+body {
+  background: #292826;
+}
 textarea:focus, input:focus{
   outline: none;
 }
 
 input {
-  border: 1px solid #cccccc;
+  border: 1px solid #292826;
   padding: 5px;
-  border-radius: 2px;
+  border-radius: 4px;
 }
 
 textarea {
   min-height: 50px;
-  border: 1px solid #cccccc;
+  border: 1px solid #292826;
   padding: 5px;
   resize: none;
-  border-radius: 2px;
+  border-radius: 4px;
 }
 
 button {
   opacity: 1;
   border: none;
-  background: #0366d6;
-  color: white;
+  background: #f9d342;
+  color: #292826;
   border-radius: 2px;
   padding: 5px;
   min-width: 100px;
