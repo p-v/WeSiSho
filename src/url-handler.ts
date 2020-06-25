@@ -61,7 +61,7 @@ const lookInLocalStorage = (baseUrl: string, key: string) => {
     chrome.storage.local.get('shortcuts', (result) => {
         const shortcuts = result.shortcuts;
         if (shortcuts && shortcuts[baseUrl] && shortcuts[baseUrl][key]) {
-            if (shortcuts[baseUrl][key].sequence) {
+            if (shortcuts[baseUrl][key].sequence && shortcuts[baseUrl][key].length > 0) {
                 chrome.runtime.sendMessage({ type: 'execute', sequence: shortcuts[baseUrl][key].sequence, sequenceIndex: 0 });
             } else {
                 showUrl(shortcuts[baseUrl][key].url);
