@@ -13,8 +13,6 @@ Record complex click actions, like logging or opening settings, and save them to
 
 ![Play recorded sequence](https://i.imgur.com/HuI5MsL.gif)
 
-The extension can be downloaded from the [release page](https://github.com/p-v/WeSiSho/releases)
-
 To build from source use,
 
-> npm run prod
+> yarn prod
