@@ -33,7 +33,7 @@
     "eslint-plugin-react": "^6.4.1",
     "file-loader": "^1.1.11",
     "html-webpack-plugin": "^4.3.0",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "style-loader": "^0.20.2",
     "ts-loader": "^7.0.5",
     "typescript": "^3.9.5",
